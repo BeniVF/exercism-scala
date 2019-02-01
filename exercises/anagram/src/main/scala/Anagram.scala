@@ -5,11 +5,11 @@ object Anagram {
       .filter(isAnagram(_, word))
 
   private def isAnagram(word: String, candidate: String): Boolean = {
-    val normalizedWord = word.toLowerCase()
-    val normalizedCandidate = candidate.toLowerCase()
-    normalizedCandidate.length == normalizedWord.length &&
+    lazy val normalizedWord = word.toLowerCase()
+    lazy val normalizedCandidate = candidate.toLowerCase()
+    word.length == candidate.length &&
     normalizedWord != normalizedCandidate &&
-    normalizedCandidate.sorted == normalizedWord.sorted
+    normalizedWord.sorted == normalizedCandidate.sorted
   }
 
 }
