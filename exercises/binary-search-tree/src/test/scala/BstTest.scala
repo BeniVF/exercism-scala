@@ -1,4 +1,4 @@
-import org.scalatest.{Matchers, FlatSpec}
+import org.scalatest.{FlatSpec, Matchers}
 
 /** @version created manually **/
 class BstTest extends FlatSpec with Matchers {

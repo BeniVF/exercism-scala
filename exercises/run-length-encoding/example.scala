@@ -7,7 +7,7 @@ object RunLengthEncoding {
       if (xs.length > 1) s"${xs.length}${xs.head}"
       else xs mkString
 
-    splitByEquals(str) flatMap encodeGroup mkString
+    splitByEquals(str).flatMap(encodeGroup) mkString
   }
 
   def decode(str: Encoded): Plain = {
@@ -26,7 +26,7 @@ object RunLengthEncoding {
     xs match {
       case Seq() => Seq()
       case x +: xss =>
-        val fs = xs takeWhile (_ == x)
-        fs +: splitByEquals(xs drop fs.length)
+        val fs = xs.takeWhile(_ == x)
+        fs +: splitByEquals(xs.drop(fs.length))
     }
 }

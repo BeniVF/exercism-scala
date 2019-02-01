@@ -16,39 +16,39 @@ object Sgf extends RegexParsers {
   override val skipWhitespace = false
 
   private implicit def parseResultToOption[T](parseResult: ParseResult[T]): Option[T] =
-    parseResult map (Some(_)) getOrElse None
+    parseResult.map(Some(_)).getOrElse(None)
 
   def parseSgf(text: String): Option[SgfTree] =
     parseAll(sgfGameTree, text)
 
   private val sgfGameTree: Parser[SgfTree] =
     ("(" ~ rep1(sgfNode) ~ rep(sgfGameTree) ~ ")") ^^ {
-      case _ ~ (rootNode::subNodes) ~ subTrees ~ _ =>
-        val subNodeForest: List[SgfTree] = subNodes map (Node(_))
+      case _ ~ (rootNode :: subNodes) ~ subTrees ~ _ =>
+        val subNodeForest: List[SgfTree] = subNodes.map(Node(_))
         Node(rootNode, subNodeForest ++ subTrees)
-    } named "sgfGameTree"
+    }.named("sgfGameTree")
 
   private val sgfNode: Parser[SgfNode] =
-    ";" ~ (sgfProperty | emptySgfNode) ^^ {
+    (";" ~ (sgfProperty | emptySgfNode) ^^ {
       case _ ~ sgfNode => sgfNode
-    } named "sgfNode"
+    }).named("sgfNode")
 
   private val emptySgfNode: Parser[SgfNode] =
     "" ^^ const(Map())
 
   private def sgfProperty: Parser[SgfNode] =
-    propIdent ~ propValues ^^ {
+    (propIdent ~ propValues ^^ {
       case identifier ~ values => Map(identifier -> values)
-    } named "sgfProperty"
+    }).named("sgfProperty")
 
-  private val propIdent: Parser[String] = "[A-Z]".r named "propIdent"
+  private val propIdent: Parser[String] = "[A-Z]".r.named("propIdent")
 
   private val propValues: Parser[List[String]] = rep1(propValue)
 
   private val propValue: Parser[String] =
-    "[" ~ rep1(propValuePart) ~ "]" ^^ {
+    ("[" ~ rep1(propValuePart) ~ "]" ^^ {
       case _ ~ values ~ _ => values mkString
-    } named "propValue"
+    }).named("propValue")
 
   private val propValuePart: Parser[String] = {
     implicit class AsStringParser(self: String) { def p: Parser[String] = self }

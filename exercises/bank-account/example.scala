@@ -16,7 +16,7 @@ protected case class Account(var balance: Option[Int] = Some(0)) extends BankAcc
   override def getBalance: Option[Int] = runThreadSafe(balance)
 
   override def incrementBalance(increment: Int): Option[Int] = runThreadSafe {
-    balance flatMap { amount =>
+    balance.flatMap { amount =>
       balance = Some(amount + increment)
       balance
     }

@@ -4,11 +4,12 @@ object Change {
   type Amount = Int
 
   def findFewestCoins(target: Amount, coins: Coins): Option[Coins] = {
-    def minChange(target: Amount, coins: Coins, candidate: Coins,
-          bestResult: Option[Coins]): Option[Coins] =
-    {
+    def minChange(target: Amount,
+                  coins: Coins,
+                  candidate: Coins,
+                  bestResult: Option[Coins]): Option[Coins] = {
       def isWorseResult: Boolean =
-        bestResult map (_.length <= candidate.length) getOrElse false
+        bestResult.map(_.length <= candidate.length).getOrElse(false)
 
       if (target < 0 || isWorseResult) bestResult
       else if (target == 0) Some(candidate)
@@ -18,16 +19,20 @@ object Change {
       }
     }
 
-    def addCoin(target: Amount, coins: Coins, candidate: Coins,
-          bestResult: Option[Coins]): Option[Coins] =
+    def addCoin(target: Amount,
+                coins: Coins,
+                candidate: Coins,
+                bestResult: Option[Coins]): Option[Coins] =
       coins match {
         case coin :: _ if target - coin >= 0 =>
           minChange(target - coin, coins, coin :: candidate, bestResult)
         case _ => bestResult
       }
 
-    def dropCoin(target: Amount, coins: Coins, candidate: Coins,
-          bestResult: Option[Coins]): Option[Coins] =
+    def dropCoin(target: Amount,
+                 coins: Coins,
+                 candidate: Coins,
+                 bestResult: Option[Coins]): Option[Coins] =
       coins match {
         case _ :: restCoins =>
           minChange(target, restCoins, candidate, bestResult)
@@ -37,4 +42,3 @@ object Change {
     minChange(target, coins.sorted(Ordering.Int.reverse), List(), None)
   }
 }
-

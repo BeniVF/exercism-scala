@@ -11,16 +11,18 @@ class Board(rows: List[String]) {
 
   private def annotateSquare(x: Int, y: Int) =
     if (hasMine(x, y)) mineChar
-    else neighborsWithMines(x, y) match {
-      case 0 => ' '
-      case n => (n + '0').toChar
-    }
+    else
+      neighborsWithMines(x, y) match {
+        case 0 => ' '
+        case n => (n + '0').toChar
+      }
 
-  private def neighborsWithMines(x: Int, y: Int) = (for (
-    yNeighbor <- Math.max(0, y - 1) to Math.min(numRows - 1, y + 1);
-    xNeighbor <- Math.max(0, x - 1) to Math.min(numCols - 1, x + 1)
+  private def neighborsWithMines(x: Int, y: Int) =
+    (for {
+      yNeighbor <- Math.max(0, y - 1) to Math.min(numRows - 1, y + 1)
+      xNeighbor <- Math.max(0, x - 1) to Math.min(numCols - 1, x + 1)
       if (yNeighbor != y || xNeighbor != x) && hasMine(xNeighbor, yNeighbor)
-  ) yield Unit).length
+    } yield Unit).length
 
   private def hasMine(x: Int, y: Int) = isMineChar(boardVector(y)(x))
   private def isMineChar(c: Char) = c == mineChar

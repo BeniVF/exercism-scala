@@ -7,23 +7,21 @@ object ForthTestGenerator {
   def main(args: Array[String]): Unit = {
     val file = new File("src/main/resources/forth.json")
 
-    def toString(expected: CanonicalDataParser.Expected): String = {
+    def toString(expected: CanonicalDataParser.Expected): String =
       expected match {
-        case Right(n: Int) => s""""${n.toString}""""
+        case Right(n: Int)          => s""""${n.toString}""""
         case Right(vals: List[Int]) => s""""${vals.map(_.toString).mkString(" ")}""""
-        case _ => throw new IllegalArgumentException
+        case _                      => throw new IllegalArgumentException
       }
-    }
 
-    def isError(expected: CanonicalDataParser.Expected): Boolean = {
+    def isError(expected: CanonicalDataParser.Expected): Boolean =
       expected match {
-        case Left(_) => true
+        case Left(_)     => true
         case Right(null) => true
-        case Right(n) => false
+        case Right(n)    => false
       }
-    }
 
-    def argsToString(any: Any): String = {
+    def argsToString(any: Any): String =
       any match {
         case list: List[_] =>
           val vals = list.map(s => argsToString(s)).mkString(" ")
@@ -32,32 +30,39 @@ object ForthTestGenerator {
           s"$str"
         case _ => any.toString
       }
-    }
 
     def sutArgsFromInput(parseResult: CanonicalDataParser.ParseResult, argNames: String*): String =
-      argNames map (name => argsToString(parseResult("input").asInstanceOf[Map[String, Any]](name))) mkString ", "
+      argNames
+        .map(name => argsToString(parseResult("input").asInstanceOf[Map[String, Any]](name)))
+        .mkString(", ")
 
     def fromLabeledTestFromInput(argNames: String*): ToTestCaseData =
-      withLabeledTest { sut =>
-        labeledTest =>
-          val args = sutArgsFromInput(labeledTest.result, argNames: _*)
-          val isErr = isError(labeledTest.expected)
-          val sutCall = if (isErr)
-              s"""forth.eval($args).isLeft"""
-            else
-              s"""forth.eval($args).fold(_ => "", _.toString)"""
+      withLabeledTest { sut => labeledTest =>
+        val args = sutArgsFromInput(labeledTest.result, argNames: _*)
+        val isErr = isError(labeledTest.expected)
+        val sutCall =
+          if (isErr)
+            s"""forth.eval($args).isLeft"""
+          else
+            s"""forth.eval($args).fold(_ => "", _.toString)"""
 
-          val expected = if (isErr)
-              "true"
-            else
-              toString(labeledTest.expected)
+        val expected =
+          if (isErr)
+            "true"
+          else
+            toString(labeledTest.expected)
 
-          TestCaseData(s"${labeledTest.parentDescriptions.mkString(" - " )} - ${labeledTest.description}", sutCall, expected)
+        TestCaseData(
+          s"${labeledTest.parentDescriptions.mkString(" - ")} - ${labeledTest.description}",
+          sutCall,
+          expected)
       }
 
     val code =
-      TestSuiteBuilder.build(file, fromLabeledTestFromInput("instructions"),
-        Seq(), Seq("private val forth = new Forth"))
+      TestSuiteBuilder.build(file,
+                             fromLabeledTestFromInput("instructions"),
+                             Seq(),
+                             Seq("private val forth = new Forth"))
 
     println(s"-------------")
     println(code)

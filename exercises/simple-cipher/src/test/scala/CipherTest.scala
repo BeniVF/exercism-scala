@@ -1,4 +1,4 @@
-import org.scalatest.{Matchers, FunSuite}
+import org.scalatest.{FunSuite, Matchers}
 
 /** @version created manually **/
 class CipherTest extends FunSuite with Matchers {
@@ -9,55 +9,55 @@ class CipherTest extends FunSuite with Matchers {
     // characters will always output the key verbatim.
 
     val cipher = Cipher(None)
-    cipher.encode("aaaaaaaaaa") should be (cipher.key.substring(0, 10))
-    cipher.decode(cipher.key.substring(0, 10)) should be ("aaaaaaaaaa")
+    cipher.encode("aaaaaaaaaa") should be(cipher.key.substring(0, 10))
+    cipher.decode(cipher.key.substring(0, 10)) should be("aaaaaaaaaa")
   }
 
-  test("Invalid key - contains caps") { 
+  test("Invalid key - contains caps") {
     pending
-    intercept[IllegalArgumentException] { 
+    intercept[IllegalArgumentException] {
       Cipher(Some("ABCD"))
     }
   }
 
-  test("Invalid key - contains numerics") { 
+  test("Invalid key - contains numerics") {
     pending
     intercept[IllegalArgumentException] {
       Cipher(Some("123"))
     }
   }
 
-  test("Invalid key - is empty") { 
+  test("Invalid key - is empty") {
     pending
     intercept[IllegalArgumentException] {
       Cipher(Some(""))
     }
   }
 
-  test("Substitution cipher - can encode") { 
+  test("Substitution cipher - can encode") {
     pending
-    Cipher(Some("abcdefghij")).encode("aaaaaaaaaa") should be ("abcdefghij")
+    Cipher(Some("abcdefghij")).encode("aaaaaaaaaa") should be("abcdefghij")
   }
 
-  test("Substitution cipher - can decode") { 
+  test("Substitution cipher - can decode") {
     pending
-    Cipher(Some("abcdefghij")).decode("abcdefghij") should be ("aaaaaaaaaa")
+    Cipher(Some("abcdefghij")).decode("abcdefghij") should be("aaaaaaaaaa")
   }
 
-  test("Substitution cipher - is reversible") { 
+  test("Substitution cipher - is reversible") {
     pending
     val cipher = Cipher(Some("abcdefghij"))
-    cipher.decode(cipher.encode("abcdefghij")) should be ("abcdefghij")
+    cipher.decode(cipher.encode("abcdefghij")) should be("abcdefghij")
   }
 
-  test("Substitution cipher - can double shift") { 
+  test("Substitution cipher - can double shift") {
     pending
     val cipher = Cipher(Some("iamapandabear"))
-    cipher.encode("iamapandabear") should be ("qayaeaagaciai")
+    cipher.encode("iamapandabear") should be("qayaeaagaciai")
   }
 
-  test("Substitution cipher - can wrap") { 
+  test("Substitution cipher - can wrap") {
     pending
-    Cipher(Some("abcdefghij")).encode("zzzzzzzzzz") should be ("zabcdefghi")
+    Cipher(Some("abcdefghij")).encode("zzzzzzzzzz") should be("zabcdefghi")
   }
 }

@@ -4,7 +4,7 @@ object Octal {
   def octalToInt(s: String): Int = {
     if (s.isEmpty) throw new IllegalArgumentException("Invalid Octal")
 
-    s.foldLeft(0){case (acc, c) => accumulate(acc, c)}
+    s.foldLeft(0) { case (acc, c) => accumulate(acc, c) }
   }
 
   private def accumulate(acc: Int, c: Char) = {

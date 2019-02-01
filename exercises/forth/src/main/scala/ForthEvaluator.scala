@@ -11,13 +11,12 @@ trait ForthEvaluatorState {
   override def toString: String
 }
 
-
 abstract class Definition {
-  def evaluate(state: Either[ForthError, ForthEvaluatorState]): Either[ForthError, ForthEvaluatorState]
+  def evaluate(
+      state: Either[ForthError, ForthEvaluatorState]): Either[ForthError, ForthEvaluatorState]
 }
 
-
-trait ForthEvaluator  {
+trait ForthEvaluator {
   // TODO: Implement evaluation
   def eval(text: String): Either[ForthError, ForthEvaluatorState]
 }

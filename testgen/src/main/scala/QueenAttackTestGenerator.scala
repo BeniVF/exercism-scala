@@ -7,8 +7,7 @@ object QueenAttackTestGenerator {
   def main(args: Array[String]): Unit = {
     val file = new File("src/main/resources/queen-attack.json")
 
-    def getPosition(labeledTest: LabeledTest,
-                    queenType: String): (Int, Int) = {
+    def getPosition(labeledTest: LabeledTest, queenType: String): (Int, Int) = {
       val inputMap = labeledTest.result("input").asInstanceOf[Map[String, Any]]
       val queenMap = inputMap(queenType).asInstanceOf[Map[String, Any]]
       val positionMap = queenMap("position").asInstanceOf[Map[String, Int]]
@@ -46,33 +45,35 @@ object QueenAttackTestGenerator {
     }
 
     def fromLabeledTestFromInput: ToTestCaseData =
-      withLabeledTest { sut =>
-        labeledTest =>
-          val property = labeledTest.property
-          val (clazz, args, expected) = property match {
-            case "create" =>
-              ("Queen",
-                toPositionArgs(getQueenPosition(labeledTest)),
-                toCreateExpected(labeledTest))
-            case "canAttack" =>
-              ("QueenAttack",
-                toCanAttackArgs(labeledTest),
-                labeledTest.expected.fold(_ => "false", _.toString))
-            case _ => throw new IllegalStateException()
-          }
-          val sutCall = s"""$clazz.$property($args)"""
-          TestCaseData(labeledTest.description, sutCall, expected)
+      withLabeledTest { sut => labeledTest =>
+        val property = labeledTest.property
+        val (clazz, args, expected) = property match {
+          case "create" =>
+            ("Queen", toPositionArgs(getQueenPosition(labeledTest)), toCreateExpected(labeledTest))
+          case "canAttack" =>
+            ("QueenAttack",
+             toCanAttackArgs(labeledTest),
+             labeledTest.expected.fold(_ => "false", _.toString))
+          case _ => throw new IllegalStateException()
+        }
+        val sutCall = s"""$clazz.$property($args)"""
+        TestCaseData(labeledTest.description, sutCall, expected)
       }
 
     val code =
-      TestSuiteBuilder.build(file, fromLabeledTestFromInput,
+      TestSuiteBuilder.build(
+        file,
+        fromLabeledTestFromInput,
         Seq(),
-        Seq(" private def create(x: Int, y: Int): Queen = {",
+        Seq(
+          " private def create(x: Int, y: Int): Queen = {",
           "    Queen.create(x, y) match {",
           "      case Some(q) => q",
           "      case None => fail(\"Error creating queen\")",
           "    }",
-          "  }"))
+          "  }"
+        )
+      )
 
     println(s"-------------")
     println(code)

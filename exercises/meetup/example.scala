@@ -13,12 +13,13 @@ case class Meetup(month: Int, year: Int) {
   private val third: Scheduler = (dayOfWeek: Int) => second.day(dayOfWeek).plusDays(7)
   private val fourth: Scheduler = (dayOfWeek: Int) => third.day(dayOfWeek).plusDays(7)
   private val last: Scheduler = (dayOfWeek: Int) => nextMonth.next(dayOfWeek).minusDays(7)
-  private def schedulers: Map[Schedule, Scheduler] = Map(Schedule.Teenth -> teenth,
-    Schedule.First -> first,
-    Schedule.Second -> second,
-    Schedule.Third -> third,
-    Schedule.Fourth -> fourth,
-    Schedule.Last -> last)
+  private def schedulers: Map[Schedule, Scheduler] =
+    Map(Schedule.Teenth -> teenth,
+        Schedule.First -> first,
+        Schedule.Second -> second,
+        Schedule.Third -> third,
+        Schedule.Fourth -> fourth,
+        Schedule.Last -> last)
 
   def day(dayOfWeek: Int, schedule: Schedule): LocalDate =
     schedulers(schedule).day(dayOfWeek)

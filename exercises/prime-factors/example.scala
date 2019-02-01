@@ -6,13 +6,12 @@ object PrimeFactors {
     assert(n >= 1, "Argument must be positive")
 
     @tailrec
-    def primeAcc(n: Long, xs: List[Long]): List[Long] = {
+    def primeAcc(n: Long, xs: List[Long]): List[Long] =
       if (n == 1) xs
       else {
         val p = ld(n)
         primeAcc(n / p, p :: xs)
       }
-    }
 
     primeAcc(n, List()).reverse
   }
@@ -25,5 +24,3 @@ object PrimeFactors {
     else if (k * k > n) n
     else ldf(k + 1, n)
 }
-
-

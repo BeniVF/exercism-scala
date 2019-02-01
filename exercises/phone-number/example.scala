@@ -10,8 +10,8 @@ object PhoneNumber {
     s"""1?${part(AreaCodeLength)}${part(PrefixLength)}${part(LineNumberLength)}""".r
   }
 
-  def clean(phoneNumber: String): Option[String] = {
-    phoneNumber filter (_.isDigit) match {
+  def clean(phoneNumber: String): Option[String] =
+    phoneNumber.filter(_.isDigit) match {
       case PhoneNumberPattern(areaCode, prefix, lineNumber) => {
         val areaCodeFirst = areaCode.head.asDigit
         val prefixFirst = prefix.head.asDigit
@@ -22,5 +22,4 @@ object PhoneNumber {
       }
       case _ => None
     }
-  }
 }

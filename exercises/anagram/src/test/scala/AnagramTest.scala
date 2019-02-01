@@ -1,11 +1,10 @@
-import org.scalatest.{Matchers, FunSuite}
+import org.scalatest.{FunSuite, Matchers}
 
 /** @version 1.4.0 */
 class AnagramTest extends FunSuite with Matchers {
 
   test("no matches") {
-    Anagram.findAnagrams("diaper", List("hello", "world", "zombies", "pants")) should be(
-      List())
+    Anagram.findAnagrams("diaper", List("hello", "world", "zombies", "pants")) should be(List())
   }
 
   test("detects two anagrams") {
@@ -21,20 +20,15 @@ class AnagramTest extends FunSuite with Matchers {
 
   test("detects anagram") {
     pending
-    Anagram.findAnagrams(
-      "listen",
-      List("enlists", "google", "inlets", "banana")) should be(List("inlets"))
+    Anagram.findAnagrams("listen", List("enlists", "google", "inlets", "banana")) should be(
+      List("inlets"))
   }
 
   test("detects three anagrams") {
     pending
-    Anagram.findAnagrams("allergy",
-                         List("gallery",
-                              "ballerina",
-                              "regally",
-                              "clergy",
-                              "largely",
-                              "leading")) should be(
+    Anagram.findAnagrams(
+      "allergy",
+      List("gallery", "ballerina", "regally", "clergy", "largely", "leading")) should be(
       List("gallery", "regally", "largely"))
   }
 
@@ -45,25 +39,19 @@ class AnagramTest extends FunSuite with Matchers {
 
   test("detects anagrams case-insensitively") {
     pending
-    Anagram.findAnagrams(
-      "Orchestra",
-      List("cashregister", "Carthorse", "radishes")) should be(
+    Anagram.findAnagrams("Orchestra", List("cashregister", "Carthorse", "radishes")) should be(
       List("Carthorse"))
   }
 
   test("detects anagrams using case-insensitive subject") {
     pending
-    Anagram.findAnagrams(
-      "Orchestra",
-      List("cashregister", "carthorse", "radishes")) should be(
+    Anagram.findAnagrams("Orchestra", List("cashregister", "carthorse", "radishes")) should be(
       List("carthorse"))
   }
 
   test("detects anagrams using case-insensitive possible matches") {
     pending
-    Anagram.findAnagrams(
-      "orchestra",
-      List("cashregister", "Carthorse", "radishes")) should be(
+    Anagram.findAnagrams("orchestra", List("cashregister", "Carthorse", "radishes")) should be(
       List("Carthorse"))
   }
 
@@ -79,7 +67,6 @@ class AnagramTest extends FunSuite with Matchers {
 
   test("words are not anagrams of themselves (case-insensitive)") {
     pending
-    Anagram.findAnagrams("BANANA", List("BANANA", "Banana", "banana")) should be(
-      List())
+    Anagram.findAnagrams("BANANA", List("BANANA", "Banana", "banana")) should be(List())
   }
 }

@@ -3,7 +3,7 @@ import scala.util.matching.Regex
 import scala.util.parsing.combinator.RegexParsers
 
 case class ForthState(stack: List[Int], definitions: Map[String, List[Definition]])
-  extends ForthEvaluatorState {
+    extends ForthEvaluatorState {
 
   override def toString: String = stack.reverse.mkString(" ")
 }
@@ -24,28 +24,32 @@ object Definitions {
 sealed abstract class TermDefinition extends Definition {
   protected def word: String
 
-  def evaluate(state: Either[ForthError, ForthEvaluatorState]): Either[ForthError, ForthEvaluatorState] =
+  def evaluate(
+      state: Either[ForthError, ForthEvaluatorState]): Either[ForthError, ForthEvaluatorState] =
     if (shouldEvaluateUserDef(state)) {
       evaluateUserDef(state)
     } else {
       evaluateDefinition(state)
     }
 
-  def evaluateDefinition(state: Either[ForthError, ForthEvaluatorState]): Either[ForthError, ForthEvaluatorState]
+  def evaluateDefinition(
+      state: Either[ForthError, ForthEvaluatorState]): Either[ForthError, ForthEvaluatorState]
 
   protected def shouldEvaluateUserDef(state: Either[ForthError, ForthEvaluatorState]) =
     state match {
-      case Left(_) => false
+      case Left(_)   => false
       case Right(fs) => fs.asInstanceOf[ForthState].definitions contains word
     }
 
-  protected def evaluateUserDef(state: Either[ForthError, ForthEvaluatorState]): Either[ForthError, ForthEvaluatorState] =
+  protected def evaluateUserDef(
+      state: Either[ForthError, ForthEvaluatorState]): Either[ForthError, ForthEvaluatorState] =
     state match {
       case Left(_) => state
       case Right(fs) =>
         val fsMap = fs.asInstanceOf[ForthState].definitions
-        fsMap get word match {
-          case Some(definitions) => definitions.foldLeft(state)((acc, definition) => definition.evaluate(acc))
+        fsMap.get(word) match {
+          case Some(definitions) =>
+            definitions.foldLeft(state)((acc, definition) => definition.evaluate(acc))
           case None => Left(ForthError.InvalidWord)
         }
     }
@@ -54,7 +58,8 @@ sealed abstract class TermDefinition extends Definition {
 case class Add() extends TermDefinition {
   override protected def word = Definitions.add
 
-  override def evaluateDefinition(state: Either[ForthError, ForthEvaluatorState]): Either[ForthError, ForthEvaluatorState] =
+  override def evaluateDefinition(
+      state: Either[ForthError, ForthEvaluatorState]): Either[ForthError, ForthEvaluatorState] =
     state match {
       case Left(_) => state
       case Right(fs) =>
@@ -72,7 +77,8 @@ case class Add() extends TermDefinition {
 case class Subtract() extends TermDefinition {
   override protected def word = Definitions.subtract
 
-  override def evaluateDefinition(state: Either[ForthError, ForthEvaluatorState]): Either[ForthError, ForthEvaluatorState] =
+  override def evaluateDefinition(
+      state: Either[ForthError, ForthEvaluatorState]): Either[ForthError, ForthEvaluatorState] =
     state match {
       case Left(_) => state
       case Right(fs) =>
@@ -90,7 +96,8 @@ case class Subtract() extends TermDefinition {
 case class Multiply() extends TermDefinition {
   override protected def word = Definitions.multiply
 
-  override def evaluateDefinition(state: Either[ForthError, ForthEvaluatorState]): Either[ForthError, ForthEvaluatorState] =
+  override def evaluateDefinition(
+      state: Either[ForthError, ForthEvaluatorState]): Either[ForthError, ForthEvaluatorState] =
     state match {
       case Left(_) => state
       case Right(fs) =>
@@ -108,7 +115,8 @@ case class Multiply() extends TermDefinition {
 case class Divide() extends TermDefinition {
   override protected def word = Definitions.divide
 
-  override def evaluateDefinition(state: Either[ForthError, ForthEvaluatorState]): Either[ForthError, ForthEvaluatorState] =
+  override def evaluateDefinition(
+      state: Either[ForthError, ForthEvaluatorState]): Either[ForthError, ForthEvaluatorState] =
     state match {
       case Left(_) => state
       case Right(fs) =>
@@ -130,7 +138,8 @@ case class Divide() extends TermDefinition {
 case class Dup() extends TermDefinition {
   override protected def word = Definitions.dup
 
-  override def evaluateDefinition(state: Either[ForthError, ForthEvaluatorState]): Either[ForthError, ForthEvaluatorState] =
+  override def evaluateDefinition(
+      state: Either[ForthError, ForthEvaluatorState]): Either[ForthError, ForthEvaluatorState] =
     state match {
       case Left(_) => state
       case Right(fs) =>
@@ -146,7 +155,8 @@ case class Dup() extends TermDefinition {
 case class Drop() extends TermDefinition {
   override protected def word = Definitions.drop
 
-  override def evaluateDefinition(state: Either[ForthError, ForthEvaluatorState]): Either[ForthError, ForthEvaluatorState] =
+  override def evaluateDefinition(
+      state: Either[ForthError, ForthEvaluatorState]): Either[ForthError, ForthEvaluatorState] =
     state match {
       case Left(_) => state
       case Right(fs) =>
@@ -162,7 +172,8 @@ case class Drop() extends TermDefinition {
 case class Swap() extends TermDefinition {
   override protected def word = Definitions.swap
 
-  override def evaluateDefinition(state: Either[ForthError, ForthEvaluatorState]): Either[ForthError, ForthEvaluatorState] =
+  override def evaluateDefinition(
+      state: Either[ForthError, ForthEvaluatorState]): Either[ForthError, ForthEvaluatorState] =
     state match {
       case Left(_) => state
       case Right(fs) =>
@@ -180,7 +191,8 @@ case class Swap() extends TermDefinition {
 case class Over() extends TermDefinition {
   override protected def word = Definitions.over
 
-  override def evaluateDefinition(state: Either[ForthError, ForthEvaluatorState]): Either[ForthError, ForthEvaluatorState] =
+  override def evaluateDefinition(
+      state: Either[ForthError, ForthEvaluatorState]): Either[ForthError, ForthEvaluatorState] =
     state match {
       case Left(_) => state
       case Right(fs) =>
@@ -198,14 +210,15 @@ case class Over() extends TermDefinition {
 case class UserDef(userTerm: String, definitions: List[TermDefinition]) extends TermDefinition {
   override protected def word = ""
 
-  override def evaluateDefinition(state: Either[ForthError, ForthEvaluatorState]): Either[ForthError, ForthEvaluatorState] =
+  override def evaluateDefinition(
+      state: Either[ForthError, ForthEvaluatorState]): Either[ForthError, ForthEvaluatorState] =
     state match {
       case Left(_) => state
       case Right(fs) =>
         val fsMap = fs.asInstanceOf[ForthState].definitions
         val substitutedDefs: List[Definition] = definitions.flatMap {
-          case PossibleUser(s) => fsMap(s)
-          case d@(_: Definition) => List(d)
+          case PossibleUser(s)     => fsMap(s)
+          case d @ (_: Definition) => List(d)
         }
         val updatedMap = fsMap + (userTerm -> substitutedDefs)
         val stack = fs.asInstanceOf[ForthState].stack
@@ -213,20 +226,26 @@ case class UserDef(userTerm: String, definitions: List[TermDefinition]) extends 
     }
 }
 
-case class PossibleUser(word: String) extends TermDefinition  {
-  override protected def shouldEvaluateUserDef(state: Either[ForthError, ForthEvaluatorState]): Boolean = true
+case class PossibleUser(word: String) extends TermDefinition {
+  override protected def shouldEvaluateUserDef(
+      state: Either[ForthError, ForthEvaluatorState]): Boolean = true
 
-  override def evaluateDefinition(state: Either[ForthError, ForthEvaluatorState]): Either[ForthError, ForthEvaluatorState] = state
+  override def evaluateDefinition(
+      state: Either[ForthError, ForthEvaluatorState]): Either[ForthError, ForthEvaluatorState] =
+    state
 }
 
 case class Term(value: Int) extends TermDefinition {
   override protected def word = ""
 
-  override def evaluateDefinition(state: Either[ForthError, ForthEvaluatorState]): Either[ForthError, ForthEvaluatorState] =
+  override def evaluateDefinition(
+      state: Either[ForthError, ForthEvaluatorState]): Either[ForthError, ForthEvaluatorState] =
     state match {
       case Left(_) => state
-      case Right(fs) => Right(ForthState(value :: fs.asInstanceOf[ForthState].stack,
-        fs.asInstanceOf[ForthState].definitions))
+      case Right(fs) =>
+        Right(
+          ForthState(value :: fs.asInstanceOf[ForthState].stack,
+                     fs.asInstanceOf[ForthState].definitions))
     }
 }
 
@@ -234,32 +253,38 @@ class Forth extends ForthEvaluator with RegexParsers {
 
   override protected val whiteSpace: Regex = "(?U)(\\s|[\\u0000-\\u001f])+".r
 
-  private def word: Parser[TermDefinition] = "(?U)[\\S&&[^;]&&[^0-9]]+".r ^^ { s => {
-    s.toLowerCase match {
-      case Definitions.add => Add()
-      case Definitions.subtract => Subtract()
-      case Definitions.multiply => Multiply()
-      case Definitions.divide => Divide()
-      case Definitions.dup => Dup()
-      case Definitions.drop => Drop()
-      case Definitions.swap => Swap()
-      case Definitions.over => Over()
-      case possibleUserWord: String => PossibleUser(possibleUserWord)
+  private def word: Parser[TermDefinition] = "(?U)[\\S&&[^;]&&[^0-9]]+".r ^^ { s =>
+    {
+      s.toLowerCase match {
+        case Definitions.add          => Add()
+        case Definitions.subtract     => Subtract()
+        case Definitions.multiply     => Multiply()
+        case Definitions.divide       => Divide()
+        case Definitions.dup          => Dup()
+        case Definitions.drop         => Drop()
+        case Definitions.swap         => Swap()
+        case Definitions.over         => Over()
+        case possibleUserWord: String => PossibleUser(possibleUserWord)
+      }
     }
   }
-  }
 
-  private def userDefinition: Parser[TermDefinition] = (":" ~> "(?U)[\\S&&[^0-9]]+".r ~ rep(word | number) <~ ";") ^^ {
-    case userDef: Forth.this.~[String, List[TermDefinition]] => UserDef(userDef._1.toLowerCase, userDef._2)
-  }
+  private def userDefinition: Parser[TermDefinition] =
+    (":" ~> "(?U)[\\S&&[^0-9]]+".r ~ rep(word | number) <~ ";") ^^ {
+      case userDef: Forth.this.~[String, List[TermDefinition]] =>
+        UserDef(userDef._1.toLowerCase, userDef._2)
+    }
 
-  private def number: Parser[TermDefinition] = "(?U)([0-9]+)".r ^^ { s => Term(s.toInt) }
+  private def number: Parser[TermDefinition] = "(?U)([0-9]+)".r ^^ { s =>
+    Term(s.toInt)
+  }
   private def term: Parser[TermDefinition] = userDefinition | word | number
   private def terms: Parser[List[TermDefinition]] = rep(term)
 
   def eval(text: String): Either[ForthError, ForthEvaluatorState] = parseAll(terms, text) match {
     case Success(defs: List[TermDefinition], _) =>
-      defs.foldLeft(Right(EmptyState): Either[ForthError, ForthEvaluatorState])((acc, definition: TermDefinition) => definition.evaluate(acc))
+      defs.foldLeft(Right(EmptyState): Either[ForthError, ForthEvaluatorState])(
+        (acc, definition: TermDefinition) => definition.evaluate(acc))
     case NoSuccess(_, _) => Left(ForthError.InvalidWord)
   }
 }

@@ -1,4 +1,4 @@
-import org.scalatest.{Matchers, FunSuite}
+import org.scalatest.{FunSuite, Matchers}
 
 /** @version 2.0.0 */
 class HighScoresTest extends FunSuite with Matchers {
@@ -39,8 +39,7 @@ class HighScoresTest extends FunSuite with Matchers {
 
   test("Personal top from a long list") {
     pending
-    HighScores.personalTop(
-      List(10, 30, 90, 30, 100, 20, 10, 0, 30, 40, 40, 70, 70)) should be(
+    HighScores.personalTop(List(10, 30, 90, 30, 100, 20, 10, 0, 30, 40, 40, 70, 70)) should be(
       List(100, 90, 70))
   }
 

@@ -1,4 +1,4 @@
-import org.scalatest.{Matchers, FunSuite}
+import org.scalatest.{FunSuite, Matchers}
 
 /** @version 1.1.0 */
 class DiamondTest extends FunSuite with Matchers {
@@ -14,20 +14,13 @@ class DiamondTest extends FunSuite with Matchers {
 
   test("Smallest non-degenerate case with odd diamond side length") {
     pending
-    Diamond.rows('C') should be(
-      List("  A  ", " B B ", "C   C", " B B ", "  A  "))
+    Diamond.rows('C') should be(List("  A  ", " B B ", "C   C", " B B ", "  A  "))
   }
 
   test("Smallest non-degenerate case with even diamond side length") {
     pending
     Diamond.rows('D') should be(
-      List("   A   ",
-           "  B B  ",
-           " C   C ",
-           "D     D",
-           " C   C ",
-           "  B B  ",
-           "   A   "))
+      List("   A   ", "  B B  ", " C   C ", "D     D", " C   C ", "  B B  ", "   A   "))
   }
 
   test("Largest possible diamond") {

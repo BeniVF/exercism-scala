@@ -1,4 +1,4 @@
-import org.scalatest.{Matchers, FunSuite}
+import org.scalatest.{FunSuite, Matchers}
 
 /** @version 1.1.0 */
 class ProteinTranslationTest extends FunSuite with Matchers {
@@ -105,8 +105,7 @@ class ProteinTranslationTest extends FunSuite with Matchers {
 
   test("Translation stops if STOP codon at end of three-codon sequence") {
     pending
-    ProteinTranslation.proteins("AUGUUUUAA") should be(
-      Seq("Methionine", "Phenylalanine"))
+    ProteinTranslation.proteins("AUGUUUUAA") should be(Seq("Methionine", "Phenylalanine"))
   }
 
   test("Translation stops if STOP codon in middle of three-codon sequence") {

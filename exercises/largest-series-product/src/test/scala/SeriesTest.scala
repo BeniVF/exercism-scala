@@ -1,4 +1,4 @@
-import org.scalatest.{Matchers, FunSuite}
+import org.scalatest.{FunSuite, Matchers}
 
 /** @version 1.1.0 */
 class LargestSeriesProductTest extends FunSuite with Matchers {
@@ -34,9 +34,7 @@ class LargestSeriesProductTest extends FunSuite with Matchers {
 
   test("can get the largest product of a big number") {
     pending
-    Series.largestProduct(
-      6,
-      "73167176531330624919225119674426574742355349194934") should be(
+    Series.largestProduct(6, "73167176531330624919225119674426574742355349194934") should be(
       Some(23520))
   }
 

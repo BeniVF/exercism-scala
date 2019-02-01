@@ -11,9 +11,8 @@ class School {
     _db = db.updated(g, grade(g) :+ name)
   }
 
-  def grade(g: Int): Seq[String] = {
+  def grade(g: Int): Seq[String] =
     db.getOrElse(g, Vector.empty)
-  }
 
   def sorted: DB = SortedMap(db.toSeq: _*).mapValues(_.sorted)
 }

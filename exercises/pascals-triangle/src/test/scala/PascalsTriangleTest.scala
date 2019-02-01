@@ -1,4 +1,4 @@
-import org.scalatest.{Matchers, FunSuite}
+import org.scalatest.{FunSuite, Matchers}
 
 /** @version 1.3.0 */
 class PascalsTriangleTest extends FunSuite with Matchers {
@@ -24,18 +24,13 @@ class PascalsTriangleTest extends FunSuite with Matchers {
 
   test("four rows") {
     pending
-    PascalsTriangle.rows(4) should be(
-      List(List(1), List(1, 1), List(1, 2, 1), List(1, 3, 3, 1)))
+    PascalsTriangle.rows(4) should be(List(List(1), List(1, 1), List(1, 2, 1), List(1, 3, 3, 1)))
   }
 
   test("five rows") {
     pending
     PascalsTriangle.rows(5) should be(
-      List(List(1),
-           List(1, 1),
-           List(1, 2, 1),
-           List(1, 3, 3, 1),
-           List(1, 4, 6, 4, 1)))
+      List(List(1), List(1, 1), List(1, 2, 1), List(1, 3, 3, 1), List(1, 4, 6, 4, 1)))
   }
 
   test("six rows") {

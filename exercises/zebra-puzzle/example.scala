@@ -57,10 +57,13 @@ object ZebraPuzzle {
   case object Five extends Position { override val fromEnum = 4 }
   object Position { val values: List[Position] = List(One, Two, Three, Four, Five) }
 
-  case class House(position: Position, color: Color, resident : Resident,
-      beverage: Beverage, cigarette: Cigarette, pet: Pet)
-  {
-    def toTheRight(other: House): Boolean = 
+  case class House(position: Position,
+                   color: Color,
+                   resident: Resident,
+                   beverage: Beverage,
+                   cigarette: Cigarette,
+                   pet: Pet) {
+    def toTheRight(other: House): Boolean =
       this.position.fromEnum == other.position.fromEnum + 1
 
     def nextTo(other: House): Boolean =
@@ -81,14 +84,14 @@ object ZebraPuzzle {
 
   lazy val fiveHouses: List[House] = {
     def housesAtPosition(position: Position): List[House] =
-      validHouses filter (_.position == position)
+      validHouses.filter(_.position == position)
 
     val candidates = for {
-      one   <- housesAtPosition(One)
-      two   <- housesAtPosition(Two)   if uniqueHouses(List(one, two))
+      one <- housesAtPosition(One)
+      two <- housesAtPosition(Two) if uniqueHouses(List(one, two))
       three <- housesAtPosition(Three) if uniqueHouses(List(one, two, three))
-      four  <- housesAtPosition(Four)  if uniqueHouses(List(one, two, three, four))
-      five  <- housesAtPosition(Five)  if uniqueHouses(List(one, two, three, four, five))
+      four <- housesAtPosition(Four) if uniqueHouses(List(one, two, three, four))
+      five <- housesAtPosition(Five) if uniqueHouses(List(one, two, three, four, five))
       candidates = List(one, two, three, four, five) if validPositions(candidates)
     } yield candidates
 
@@ -118,35 +121,37 @@ object ZebraPuzzle {
       (position == Three, beverage == Milk),
       (position == One, resident == Norwegian),
       (beverage == OrangeJuice, cigarette == LuckyStrike),
-      (resident == Japanese, cigarette == Parliaments)) forall (iff _).tupled
+      (resident == Japanese, cigarette == Parliaments)
+    ).forall((iff _).tupled)
   }
 
   private def iff(p1: Boolean, p2: Boolean): Boolean =
     (p1, p2) match {
-      case (true, true) => true
+      case (true, true)   => true
       case (false, false) => true
-      case _ => false
+      case _              => false
     }
 
   private def uniqueHouses(houses: List[House]): Boolean = {
     def unique(what: House => HousePart): Boolean =
-      (houses map what distinct).length == houses.length
+      (houses.map(what) distinct).length == houses.length
 
-    unique (_.color) && unique (_.resident) && unique (_.beverage) &&
-    unique (_.cigarette) && unique (_.pet)
+    unique(_.color) && unique(_.resident) && unique(_.beverage) &&
+    unique(_.cigarette) && unique(_.pet)
   }
 
   private def houseWith(what: House => HousePart, value: HousePart, houses: List[House]): House =
-    houses find (what(_) == value) getOrElse(throw new Exception(s"could not find house with $value"))
+    houses
+      .find(what(_) == value)
+      .getOrElse(throw new Exception(s"could not find house with $value"))
 
   private def validPositions(houses: List[House]): Boolean = {
     def _houseWith(what: House => HousePart, value: HousePart): House =
       houseWith(what, value, houses)
 
-    (_houseWith(_.color,  Green) toTheRight _houseWith(_.color, Ivory)) &&
-    (_houseWith(_.cigarette, Chesterfields) nextTo _houseWith(_.pet, Fox)) &&
-    (_houseWith(_.cigarette, Kools) nextTo _houseWith(_.pet, Horse)) &&
-    (_houseWith(_.resident, Norwegian) nextTo _houseWith(_.color, Blue))
+    (_houseWith(_.color, Green).toTheRight(_houseWith(_.color, Ivory))) &&
+    (_houseWith(_.cigarette, Chesterfields).nextTo(_houseWith(_.pet, Fox))) &&
+    (_houseWith(_.cigarette, Kools).nextTo(_houseWith(_.pet, Horse))) &&
+    (_houseWith(_.resident, Norwegian).nextTo(_houseWith(_.color, Blue)))
   }
 }
-

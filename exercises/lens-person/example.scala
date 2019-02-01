@@ -19,15 +19,17 @@ object LensPerson extends ToBeImplemented with MonocleSolution /* with ScalazSol
 
   case class Person(_name: Name, _born: Born, _address: Address)
 
-  case class Name(_foreNames: String /*Space separated*/ , _surName: String)
+  case class Name(_foreNames: String /*Space separated*/, _surName: String)
 
   // Value of java.time.LocalDate.toEpochDay
   type EpochDay = Long
 
   case class Born(_bornAt: Address, _bornOn: EpochDay)
 
-  case class Address(_street: String, _houseNumber: Int,
-    _place: String /*Village / city*/ , _country: String)
+  case class Address(_street: String,
+                     _houseNumber: Int,
+                     _place: String /*Village / city*/,
+                     _country: String)
 
   // Valid values of Gregorian are those for which 'java.time.LocalDate.of'
   // returns a valid LocalDate.
@@ -84,50 +86,48 @@ trait MonocleSolution extends ToBeImplemented {
     born ^|-> bornOn ^<-> isoEpocheDayGregorian ^|-> month set
 
   val renameStreets: (String => String) => Person => Person =
-    f => ((born ^|-> bornAt ^|-> street modify f) .compose (address ^|-> street modify f))
+    f => ((born ^|-> bornAt ^|-> street).modify(f).compose((address ^|-> street).modify(f)))
 }
 
 trait ScalazSolution extends ToBeImplemented {
   import scalaz.Lens
 
   // Person Lenses
-  val name = Lens.lensu[Person, Name](
-      (person, name) => person.copy(_name = name), (_._name))
-  val born = Lens.lensu[Person, Born](
-      (person, born) => person.copy(_born = born), (_._born))
-  val address = Lens.lensu[Person, Address](
-      (person, address) => person.copy(_address = address), (_._address))
+  val name = Lens.lensu[Person, Name]((person, name) => person.copy(_name = name), (_._name))
+  val born = Lens.lensu[Person, Born]((person, born) => person.copy(_born = born), (_._born))
+  val address =
+    Lens.lensu[Person, Address]((person, address) => person.copy(_address = address), (_._address))
 
   // Name Lenses
-  val foreNames = Lens.lensu[Name, String](
-      (name, foreNames) => name.copy(_foreNames = foreNames), (_._foreNames))
-  val surName = Lens.lensu[Name, String](
-      (name, surName) => name.copy(_surName = surName), (_._surName))
+  val foreNames =
+    Lens.lensu[Name, String]((name, foreNames) => name.copy(_foreNames = foreNames), (_._foreNames))
+  val surName =
+    Lens.lensu[Name, String]((name, surName) => name.copy(_surName = surName), (_._surName))
 
   // Born Lenses
-  val bornAt = Lens.lensu[Born, Address](
-      (born, address) => born.copy(_bornAt = address), (_._bornAt))
-  val bornOn = Lens.lensu[Born, EpochDay](
-      (born, epochDay) => born.copy(_bornOn = epochDay), (_._bornOn))
+  val bornAt =
+    Lens.lensu[Born, Address]((born, address) => born.copy(_bornAt = address), (_._bornAt))
+  val bornOn =
+    Lens.lensu[Born, EpochDay]((born, epochDay) => born.copy(_bornOn = epochDay), (_._bornOn))
 
   // Address Lenses
-  val street = Lens.lensu[Address, String](
-      (address, street) => address.copy(_street = street), (_._street))
+  val street =
+    Lens.lensu[Address, String]((address, street) => address.copy(_street = street), (_._street))
 
   // Gregorian Lenses
   val dayOfMonth = Lens.lensu[Gregorian, Int](
-      (gregorian, dayOfMonth) => gregorian.copy(_dayOfMonth = dayOfMonth), (_._dayOfMonth))
-  val month = Lens.lensu[Gregorian, Int](
-      (gregorian, month) => gregorian.copy(_month = month), (_._month))
-  val year = Lens.lensu[Gregorian, Int](
-      (gregorian, year) => gregorian.copy(_year = year), (_._year))
-
+    (gregorian, dayOfMonth) => gregorian.copy(_dayOfMonth = dayOfMonth),
+    (_._dayOfMonth))
+  val month =
+    Lens.lensu[Gregorian, Int]((gregorian, month) => gregorian.copy(_month = month), (_._month))
+  val year =
+    Lens.lensu[Gregorian, Int]((gregorian, year) => gregorian.copy(_year = year), (_._year))
 
   val bornStreet: Born => String =
     bornAt >=> street get
 
   val setCurrentStreet: String => Person => Person =
-    s => address >=> street set(_, s)
+    s => (address >=> street).set(_, s)
 
   def epochDayToGregorian(ed: EpochDay): Gregorian = {
     val ld = LocalDate.ofEpochDay(ed)
@@ -140,12 +140,13 @@ trait ScalazSolution extends ToBeImplemented {
     m => born >=> bornOn =>= setMonth(m)
 
   val setMonth: Int => EpochDay => EpochDay =
-    newMonth => oldEpochDay => {
-      val Gregorian(year, _, day) = epochDayToGregorian(oldEpochDay)
-      val newGregorian = Gregorian(year, newMonth, day)
-      gregorianToEpochDay(newGregorian)
+    newMonth =>
+      oldEpochDay => {
+        val Gregorian(year, _, day) = epochDayToGregorian(oldEpochDay)
+        val newGregorian = Gregorian(year, newMonth, day)
+        gregorianToEpochDay(newGregorian)
     }
 
   val renameStreets: (String => String) => Person => Person =
-    f => ((born >=> bornAt >=> street =>= f) .compose (address >=> street =>= f))
+    f => ((born >=> bornAt >=> street =>= f).compose(address >=> street =>= f))
 }

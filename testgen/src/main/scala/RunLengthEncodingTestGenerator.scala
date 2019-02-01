@@ -10,7 +10,7 @@ object RunLengthEncodingTestGenerator {
   def fromLabeledTestAlt(propArgs: (String, Seq[String])*): ToTestCaseData =
     withLabeledTest { sut => labeledTest =>
       val sutFunction = labeledTest.property
-      val args = sutArgsAlt(labeledTest.result, propArgs:_*)
+      val args = sutArgsAlt(labeledTest.result, propArgs: _*)
       val sutCall =
         if (sutFunction.toString == "consistency")
           s"$sut.decode($sut.encode($args))"
@@ -25,8 +25,9 @@ object RunLengthEncodingTestGenerator {
     val file = new File("src/main/resources/run-length-encoding.json")
 
     val code = TestSuiteBuilder.build(file,
-        fromLabeledTestAlt("encode" -> Seq("input"), "decode" -> Seq("input"),
-          "consistency" -> Seq("input")))
+                                      fromLabeledTestAlt("encode" -> Seq("input"),
+                                                         "decode" -> Seq("input"),
+                                                         "consistency" -> Seq("input")))
     println(s"-------------")
     println(code)
     println(s"-------------")

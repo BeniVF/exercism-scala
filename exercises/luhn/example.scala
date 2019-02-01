@@ -4,8 +4,8 @@ object Luhn {
     val s = numberStr.replace(" ", "")
 
     s.length > 1 &&
-      s.forall(c => c.isDigit) &&
-      checksum(s.map(_.asDigit).toList) == 0
+    s.forall(c => c.isDigit) &&
+    checksum(s.map(_.asDigit).toList) == 0
   }
 
   private def checkDigit(number: Long): Int = (number % 10).toInt
@@ -13,7 +13,7 @@ object Luhn {
   private def addends(digits: List[Int]): List[Int] = {
     val zippedDigits = digits.reverse.zipWithIndex
 
-    zippedDigits.map{case (m, i) => if (isOdd(i)) dbl(m) else m}
+    zippedDigits.map { case (m, i) => if (isOdd(i)) dbl(m) else m }
   }
 
   private def checksum(digits: List[Int]): Int = addends(digits).sum % 10

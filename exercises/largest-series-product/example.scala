@@ -14,7 +14,7 @@ object Series {
       else {
         slices(n, ds) match {
           case Nil => None
-          case xs => Some(xs.map(_.product).max)
+          case xs  => Some(xs.map(_.product).max)
         }
       }
     }

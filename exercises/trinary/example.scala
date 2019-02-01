@@ -4,7 +4,7 @@ trait BaseConverter {
   def baseToInt(base: Int, s: String): Int = {
     if (s.isEmpty) throw new IllegalArgumentException("Invalid base string")
 
-    s.foldLeft(0){case (acc, c) => accumulate(base, acc, c)}
+    s.foldLeft(0) { case (acc, c) => accumulate(base, acc, c) }
   }
 
   private def accumulate(base: Int, acc: Int, c: Char) = {

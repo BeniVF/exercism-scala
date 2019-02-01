@@ -1,4 +1,4 @@
-import org.scalatest.{Matchers, FunSuite}
+import org.scalatest.{FunSuite, Matchers}
 
 /** @version 1.3.0 */
 class ComplexNumberTest extends FunSuite with Matchers {
@@ -6,37 +6,37 @@ class ComplexNumberTest extends FunSuite with Matchers {
   private val equalityEpsilon = 1e-15
 
   private def assertEquals(c1: ComplexNumber, c2: ComplexNumber) {
-    c1.real should be (c2.real +- equalityEpsilon)
-    c1.imaginary should be (c2.imaginary +- equalityEpsilon)
+    c1.real should be(c2.real +- equalityEpsilon)
+    c1.imaginary should be(c2.imaginary +- equalityEpsilon)
   }
 
   test("Real part of a purely real number") {
-    ComplexNumber(real = 1).real should be (1.0 +- equalityEpsilon)
+    ComplexNumber(real = 1).real should be(1.0 +- equalityEpsilon)
   }
 
   test("Real part of a purely imaginary number") {
     pending
-    ComplexNumber(real = 0).real should be (0.0 +- equalityEpsilon)
+    ComplexNumber(real = 0).real should be(0.0 +- equalityEpsilon)
   }
 
   test("Real part of a number with real and imaginary part") {
     pending
-    ComplexNumber(real = 1).real should be (1.0 +- equalityEpsilon)
+    ComplexNumber(real = 1).real should be(1.0 +- equalityEpsilon)
   }
 
   test("Imaginary part of a purely real number") {
     pending
-    ComplexNumber(imaginary = 0).imaginary should be (0.0 +- equalityEpsilon)
+    ComplexNumber(imaginary = 0).imaginary should be(0.0 +- equalityEpsilon)
   }
 
   test("Imaginary part of a purely imaginary number") {
     pending
-    ComplexNumber(imaginary = 1).imaginary should be (1.0 +- equalityEpsilon)
+    ComplexNumber(imaginary = 1).imaginary should be(1.0 +- equalityEpsilon)
   }
 
   test("Imaginary part of a number with real and imaginary part") {
     pending
-    ComplexNumber(imaginary = 2).imaginary should be (2.0 +- equalityEpsilon)
+    ComplexNumber(imaginary = 2).imaginary should be(2.0 +- equalityEpsilon)
   }
 
   test("Imaginary unit") {
@@ -119,27 +119,27 @@ class ComplexNumberTest extends FunSuite with Matchers {
 
   test("Absolute value of a positive purely real number") {
     pending
-    ComplexNumber(5, 0).abs should be (5.0 +- equalityEpsilon)
+    ComplexNumber(5, 0).abs should be(5.0 +- equalityEpsilon)
   }
 
   test("Absolute value of a negative purely real number") {
     pending
-    ComplexNumber(-5, 0).abs should be (5.0 +- equalityEpsilon)
+    ComplexNumber(-5, 0).abs should be(5.0 +- equalityEpsilon)
   }
 
   test("Absolute value of a purely imaginary number with positive imaginary part") {
     pending
-    ComplexNumber(0, 5).abs should be (5.0 +- equalityEpsilon)
+    ComplexNumber(0, 5).abs should be(5.0 +- equalityEpsilon)
   }
 
   test("Absolute value of a purely imaginary number with negative imaginary part") {
     pending
-    ComplexNumber(0, -5).abs should be (5.0 +- equalityEpsilon)
+    ComplexNumber(0, -5).abs should be(5.0 +- equalityEpsilon)
   }
 
   test("Absolute value of a number with real and imaginary part") {
     pending
-    ComplexNumber(3, 4).abs should be (5.0 +- equalityEpsilon)
+    ComplexNumber(3, 4).abs should be(5.0 +- equalityEpsilon)
   }
 
   test("Conjugate a purely real number") {

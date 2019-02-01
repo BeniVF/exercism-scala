@@ -1,4 +1,4 @@
-import org.scalatest.{Matchers, FunSuite}
+import org.scalatest.{FunSuite, Matchers}
 
 /** @version 2.2.0 */
 class RobotSimulatorTest extends FunSuite with Matchers {
@@ -8,14 +8,12 @@ class RobotSimulatorTest extends FunSuite with Matchers {
     Robot(Bearing.North, (0, 0)) should be(Robot(Bearing.North, (0, 0)))
   }
 
-  test(
-    "A robot is created with a position and a direction - Negative positions are allowed") {
+  test("A robot is created with a position and a direction - Negative positions are allowed") {
     pending
     Robot(Bearing.South, (-1, -1)) should be(Robot(Bearing.South, (-1, -1)))
   }
 
-  test(
-    "rotates the robot's direction 90 degrees clockwise - does not change the position") {
+  test("rotates the robot's direction 90 degrees clockwise - does not change the position") {
     pending
     Robot(Bearing.North, (0, 0)).turnRight.coordinates should be((0, 0))
   }
@@ -44,8 +42,7 @@ class RobotSimulatorTest extends FunSuite with Matchers {
     Robot(Bearing.West, (0, 0)).turnRight.bearing should be(Bearing.North)
   }
 
-  test(
-    "rotates the robot's direction 90 degrees counter-clockwise - does not change the position") {
+  test("rotates the robot's direction 90 degrees counter-clockwise - does not change the position") {
     pending
     Robot(Bearing.North, (0, 0)).turnLeft.coordinates should be((0, 0))
   }
@@ -107,21 +104,18 @@ class RobotSimulatorTest extends FunSuite with Matchers {
   test(
     "Where R = Turn Right, L = Turn Left and A = Advance, the robot can follow a series of instructions and end up with the correct position and direction - instructions to move west and north") {
     pending
-    Robot(Bearing.North, (0, 0)).simulate("LAAARALA") should be(
-      Robot(Bearing.West, (-4, 1)))
+    Robot(Bearing.North, (0, 0)).simulate("LAAARALA") should be(Robot(Bearing.West, (-4, 1)))
   }
 
   test(
     "Where R = Turn Right, L = Turn Left and A = Advance, the robot can follow a series of instructions and end up with the correct position and direction - instructions to move west and south") {
     pending
-    Robot(Bearing.East, (2, -7)).simulate("RRAAAAALA") should be(
-      Robot(Bearing.South, (-3, -8)))
+    Robot(Bearing.East, (2, -7)).simulate("RRAAAAALA") should be(Robot(Bearing.South, (-3, -8)))
   }
 
   test(
     "Where R = Turn Right, L = Turn Left and A = Advance, the robot can follow a series of instructions and end up with the correct position and direction - instructions to move east and north") {
     pending
-    Robot(Bearing.South, (8, 4)).simulate("LAAARRRALLLL") should be(
-      Robot(Bearing.North, (11, 5)))
+    Robot(Bearing.South, (8, 4)).simulate("LAAARRRALLLL") should be(Robot(Bearing.North, (11, 5)))
   }
 }

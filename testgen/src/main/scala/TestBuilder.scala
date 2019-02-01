@@ -1,17 +1,22 @@
 import java.io.FileWriter
 import java.io.File
 
-case class TestCaseGen(description: String, callSUT: String, expected: String,
-    result: String, checkResult: String)
+case class TestCaseGen(description: String,
+                       callSUT: String,
+                       expected: String,
+                       result: String,
+                       checkResult: String)
 
 object TestCaseGen {
   def apply(description: String, callSUT: String, expected: String): TestCaseGen =
-    TestCaseGen(description, callSUT, expected,
-        s"val result = $callSUT", s"result should be ($expected)")
+    TestCaseGen(description,
+                callSUT,
+                expected,
+                s"val result = $callSUT",
+                s"result should be ($expected)")
 
-  implicit def toTestCaseGenSeq[T](ts: Seq[T])(
-      implicit toGen: T => TestCaseGen): Seq[TestCaseGen] =
-    ts map toGen
+  implicit def toTestCaseGenSeq[T](ts: Seq[T])(implicit toGen: T => TestCaseGen): Seq[TestCaseGen] =
+    ts.map(toGen)
 }
 
 class TestBuilder(testName: String) {
@@ -35,7 +40,7 @@ class TestBuilder(testName: String) {
   }
 
   def build: String =
-s"""$printImports
+    s"""$printImports
 $printVersion
 class $testName extends FunSuite with Matchers {
 $printTestCases
@@ -45,12 +50,12 @@ $printTestCases
   private lazy val printVersion: String =
     version match {
       case Some(v) => s"""/** @version $v */"""
-      case None => ""
+      case None    => ""
     }
 
   private lazy val printImports: String =
     "import org.scalatest.{FunSuite, Matchers}\n" +
-    (imports map (imp => s"import $imp\n") mkString)
+      (imports.map(imp => s"import $imp\n") mkString)
 
   private lazy val printTestCases: String = {
     var pending = false
@@ -58,32 +63,31 @@ $printTestCases
       if (pending) s"pending\n    " else { pending = true; "" }
 
     def printTestCaseGroup(testCaseGroup: Seq[TestCaseGen],
-        groupDescription: Option[String]): String =
-    {
-      val description = groupDescription map (s => s"\n  // $s") getOrElse ""
-      val testCases = testCaseGroup map printTestCase mkString
+                           groupDescription: Option[String]): String = {
+      val description = groupDescription.map(s => s"\n  // $s").getOrElse("")
+      val testCases = testCaseGroup.map(printTestCase) mkString
 
       s"$description$testCases"
     }
 
     def printTestCase(tc: TestCaseGen): String =
-s"""
+      s"""
   test("${tc.description}") {
     ${printPending}${tc.result}
     ${tc.checkResult}
   }
 """
 
-    testCases map (printTestCaseGroup _).tupled mkString
+    testCases.map((printTestCaseGroup _).tupled) mkString
   }
 }
 
 object TestBuilder {
   def main(args: Array[String]): Unit = {
     val testCases13 =
-      (1 to 3) map (i => TestCaseGen(s"test$i", s"identity($i)", s"$i"))
+      (1 to 3).map(i => TestCaseGen(s"test$i", s"identity($i)", s"$i"))
     val testCases45 =
-      (4 to 5) map (i => TestCaseGen(s"test$i", s"identity($i)", s"$i"))
+      (4 to 5).map(i => TestCaseGen(s"test$i", s"identity($i)", s"$i"))
     val tb = new TestBuilder("IdentityTest")
     tb.addImport("scala.collection.mutable")
     tb.addTestCases(testCases13, Some("identity tests 1-3"))

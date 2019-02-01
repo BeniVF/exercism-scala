@@ -27,15 +27,18 @@ object Bowling {
     @tailrec
     private def score(frames: List[List[Int]], acc: Int): Either[Error, Int] =
       frames match {
-        case x::xs => val frameScore = scoreFrame(x, xs, acc)
+        case x :: xs =>
+          val frameScore = scoreFrame(x, xs, acc)
           frameScore match {
             case Right(sum) => score(xs, sum)
-            case error => error
+            case error      => error
           }
         case _ => Right(acc)
       }
 
-    private def scoreFrame(frame: List[Int], remainingFrames: List[List[Int]], acc: Int): Either[Error, Int] = {
+    private def scoreFrame(frame: List[Int],
+                           remainingFrames: List[List[Int]],
+                           acc: Int): Either[Error, Int] =
       if (frame.exists(s => s < 0)) {
         Left(Error("rolls can not score negative points"))
       } else if (frame.exists(s => s > 10)) {
@@ -55,19 +58,16 @@ object Bowling {
 
         Right(score)
       }
-    }
 
-    private def frames(rolls: List[Int], i: Int): List[List[Int]] = {
+    private def frames(rolls: List[Int], i: Int): List[List[Int]] =
       if (rolls.isEmpty) {
         List.empty
-      }
-      else {
+      } else {
         val throws = numThrows(rolls, i)
-        rolls.take(throws)::frames(rolls.drop(throws), i + 1)
+        rolls.take(throws) :: frames(rolls.drop(throws), i + 1)
       }
-    }
 
-    private def numThrows(rolls: List[Int], frameNum: Int): Int = {
+    private def numThrows(rolls: List[Int], frameNum: Int): Int =
       if (frameNum == 10) {
         if (strike(rolls) || spare(rolls)) 3
         else 2
@@ -76,7 +76,6 @@ object Bowling {
       } else {
         2
       }
-    }
 
     private def strike(rolls: List[Int]): Boolean =
       rolls.headOption.getOrElse(0) == 10
@@ -89,8 +88,8 @@ object Bowling {
 
     private def spareBonus(frames: List[List[Int]]): Int =
       frames match {
-        case x::xs => x.head
-        case _ => 0
+        case x :: xs => x.head
+        case _       => 0
       }
 
     private def isValidFinalFrame(rolls: List[Int]): Boolean = {
@@ -101,11 +100,11 @@ object Bowling {
         !isStrike && !isSpare
       } else if (rolls.length == 3) {
         (isStrike || isSpare) &&
-          (if (isStrike) {
-            rolls(1) == 10 || (rolls(1) + rolls(2) <= 10)
-          } else {
-            isSpare || rolls(1) + rolls(2) <= 10
-          })
+        (if (isStrike) {
+           rolls(1) == 10 || (rolls(1) + rolls(2) <= 10)
+         } else {
+           isSpare || rolls(1) + rolls(2) <= 10
+         })
       } else {
         false
       }

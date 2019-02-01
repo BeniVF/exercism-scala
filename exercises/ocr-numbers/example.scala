@@ -7,24 +7,28 @@ object OcrNumbers {
     if (validGridSize)
       "?"
     else {
-      ocrReadoutLines(grid).map(ocrLine => {
-        val iterator = ocrLine.iterator
-        val line0 = iterator.next()
-        val line1 = iterator.next()
-        val line2 = iterator.next()
-        val line3 = iterator.next()
+      ocrReadoutLines(grid)
+        .map(ocrLine => {
+          val iterator = ocrLine.iterator
+          val line0 = iterator.next()
+          val line1 = iterator.next()
+          val line2 = iterator.next()
+          val line3 = iterator.next()
 
-        toDigits(line0, line1, line2, line3, "")
-      }).mkString(",")
+          toDigits(line0, line1, line2, line3, "")
+        })
+        .mkString(",")
     }
   }
 
   private def ocrReadoutLines(grid: List[String]) = grid.grouped(4)
 
   @tailrec
-  private def toDigits(line0: String, line1: String,
-                       line2: String, line3: String,
-                       acc: String): String = {
+  private def toDigits(line0: String,
+                       line1: String,
+                       line2: String,
+                       line3: String,
+                       acc: String): String =
     if (line0.isEmpty || line1.isEmpty || line2.isEmpty || line3.isEmpty) acc
     else {
       val (l0Head, l0Tail) = line0.splitAt(3)
@@ -37,46 +41,17 @@ object OcrNumbers {
 
       toDigits(l0Tail, l1Tail, l2Tail, l3Tail, acc + digit)
     }
-  }
 
-  private lazy val fontToDigit = Map(List(" _ "
-    , "| |"
-    , "|_|"
-    , "   ") -> '0',
-    List("   "
-      , "  |"
-      , "  |"
-      , "   ") -> '1',
-    List(" _ "
-      , " _|"
-      , "|_ "
-      , "   ") -> '2',
-    List(" _ "
-      , " _|"
-      , " _|"
-      , "   ") -> '3',
-    List("   "
-      , "|_|"
-      , "  |"
-      , "   ") -> '4',
-    List(" _ "
-      , "|_ "
-      , " _|"
-      , "   ") -> '5',
-    List(" _ "
-      , "|_ "
-      , "|_|"
-      , "   ") -> '6',
-    List(" _ "
-      , "  |"
-      , "  |"
-      , "   ") -> '7',
-    List(" _ "
-      , "|_|"
-      , "|_|"
-      , "   ") -> '8',
-    List(" _ "
-      , "|_|"
-      , " _|"
-      , "   ") -> '9')
+  private lazy val fontToDigit = Map(
+    List(" _ ", "| |", "|_|", "   ") -> '0',
+    List("   ", "  |", "  |", "   ") -> '1',
+    List(" _ ", " _|", "|_ ", "   ") -> '2',
+    List(" _ ", " _|", " _|", "   ") -> '3',
+    List("   ", "|_|", "  |", "   ") -> '4',
+    List(" _ ", "|_ ", " _|", "   ") -> '5',
+    List(" _ ", "|_ ", "|_|", "   ") -> '6',
+    List(" _ ", "  |", "  |", "   ") -> '7',
+    List(" _ ", "|_|", "|_|", "   ") -> '8',
+    List(" _ ", "|_|", " _|", "   ") -> '9'
+  )
 }

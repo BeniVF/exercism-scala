@@ -25,7 +25,7 @@ object CryptoSquare {
     transpose(plainSegs).mkString(" ")
   }
 
-  private def transpose(texts: List[String]): List[String] = {
+  private def transpose(texts: List[String]): List[String] =
     if (texts.isEmpty || texts.head.isEmpty) {
       List.empty
     } else {
@@ -35,5 +35,4 @@ object CryptoSquare {
       val padded = texts.map(s => s.padTo(size, "\u0000"))
       padded.transpose.map(item => item.mkString.replaceAll("\u0000", " "))
     }
-  }
 }

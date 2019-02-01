@@ -1,4 +1,4 @@
-import org.scalatest.{Matchers, FlatSpec}
+import org.scalatest.{FlatSpec, Matchers}
 
 class HexadecimalTest extends FlatSpec with Matchers {
   it should "handle empty" in {

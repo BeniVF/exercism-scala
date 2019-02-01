@@ -1,17 +1,15 @@
-import org.scalatest.{Matchers, FunSuite}
+import org.scalatest.{FunSuite, Matchers}
 
 /** @version 1.3.0 */
 class NucleotideCountTest extends FunSuite with Matchers {
 
   test("empty strand") {
-    new DNA("").nucleotideCounts should be(
-      Right(Map('A' -> 0, 'C' -> 0, 'G' -> 0, 'T' -> 0)))
+    new DNA("").nucleotideCounts should be(Right(Map('A' -> 0, 'C' -> 0, 'G' -> 0, 'T' -> 0)))
   }
 
   test("can count one nucleotide in single-character input") {
     pending
-    new DNA("G").nucleotideCounts should be(
-      Right(Map('A' -> 0, 'C' -> 0, 'G' -> 1, 'T' -> 0)))
+    new DNA("G").nucleotideCounts should be(Right(Map('A' -> 0, 'C' -> 0, 'G' -> 1, 'T' -> 0)))
   }
 
   test("strand with repeated nucleotide") {
@@ -22,8 +20,7 @@ class NucleotideCountTest extends FunSuite with Matchers {
 
   test("strand with multiple nucleotides") {
     pending
-    new DNA(
-      "AGCTTTTCATTCTGACTGCAACGGGCAATATGTCTCTGTGTGGATTAAAAAAAGAGTGTCTGATAGCAGC").nucleotideCounts should be(
+    new DNA("AGCTTTTCATTCTGACTGCAACGGGCAATATGTCTCTGTGTGGATTAAAAAAAGAGTGTCTGATAGCAGC").nucleotideCounts should be(
       Right(Map('A' -> 20, 'C' -> 12, 'G' -> 17, 'T' -> 21)))
   }
 

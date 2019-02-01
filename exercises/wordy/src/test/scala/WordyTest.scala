@@ -1,4 +1,4 @@
-import org.scalatest.{Matchers, FunSuite}
+import org.scalatest.{FunSuite, Matchers}
 
 /** @version 1.1.0 */
 class WordyTest extends FunSuite with Matchers {
@@ -59,8 +59,7 @@ class WordyTest extends FunSuite with Matchers {
 
   test("multiple multiplication") {
     pending
-    Wordy.answer("What is 2 multiplied by -2 multiplied by 3?") should be(
-      Some(-12))
+    Wordy.answer("What is 2 multiplied by -2 multiplied by 3?") should be(Some(-12))
   }
 
   test("addition and multiplication") {

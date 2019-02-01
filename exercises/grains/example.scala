@@ -19,11 +19,11 @@ object Grains {
       loop(n, 1)
     }
 
-    val pred = (_:Int) - 1
+    val pred = (_: Int) - 1
 
-    Option(cbSquare) filter isValidChessboardSquare map pred.andThen(powerOfTwo)
+    Option(cbSquare).filter(isValidChessboardSquare).map(pred.andThen(powerOfTwo))
   }
 
   def total: Grains =
-    (1 to ChessboardSquares) flatMap (square _).andThen(_.toList) sum
+    (1 to ChessboardSquares).flatMap(square _).andThen(_.toList) sum
 }

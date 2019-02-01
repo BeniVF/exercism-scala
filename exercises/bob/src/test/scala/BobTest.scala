@@ -1,4 +1,4 @@
-import org.scalatest.{Matchers, FunSuite}
+import org.scalatest.{FunSuite, Matchers}
 
 /** @version 1.4.0 */
 class BobTest extends FunSuite with Matchers {
@@ -19,8 +19,7 @@ class BobTest extends FunSuite with Matchers {
 
   test("asking a question") {
     pending
-    Bob.response("Does this cryogenic chamber make me look fat?") should be(
-      "Sure.")
+    Bob.response("Does this cryogenic chamber make me look fat?") should be("Sure.")
   }
 
   test("asking a numeric question") {
@@ -40,14 +39,12 @@ class BobTest extends FunSuite with Matchers {
 
   test("using acronyms in regular speech") {
     pending
-    Bob.response("It's OK if you don't want to go to the DMV.") should be(
-      "Whatever.")
+    Bob.response("It's OK if you don't want to go to the DMV.") should be("Whatever.")
   }
 
   test("forceful question") {
     pending
-    Bob.response("WHAT THE HELL WERE YOU THINKING?") should be(
-      "Calm down, I know what I'm doing!")
+    Bob.response("WHAT THE HELL WERE YOU THINKING?") should be("Calm down, I know what I'm doing!")
   }
 
   test("shouting numbers") {
@@ -67,8 +64,7 @@ class BobTest extends FunSuite with Matchers {
 
   test("shouting with special characters") {
     pending
-    Bob.response("ZOMG THE %^*@#$(*^ ZOMBIES ARE COMING!!11!!1!") should be(
-      "Whoa, chill out!")
+    Bob.response("ZOMG THE %^*@#$(*^ ZOMBIES ARE COMING!!11!!1!") should be("Whoa, chill out!")
   }
 
   test("shouting with no exclamation mark") {
@@ -120,8 +116,7 @@ No.""") should be("Whatever.")
 
   test("ending with whitespace") {
     pending
-    Bob.response("Okay if like my  spacebar  quite a bit?   ") should be(
-      "Sure.")
+    Bob.response("Okay if like my  spacebar  quite a bit?   ") should be("Sure.")
   }
 
   test("other whitespace") {
@@ -132,7 +127,6 @@ No.""") should be("Whatever.")
 
   test("non-question ending with whitespace") {
     pending
-    Bob.response("This is a statement ending with whitespace      ") should be(
-      "Whatever.")
+    Bob.response("This is a statement ending with whitespace      ") should be("Whatever.")
   }
 }

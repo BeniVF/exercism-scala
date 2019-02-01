@@ -36,13 +36,12 @@ class CustomSetTestGenerator {
     testBuilder.toFile
   }
 
-  private def setVersion(testBuilder: TestBuilder): Unit = {
+  private def setVersion(testBuilder: TestBuilder): Unit =
     testBuilder.setVersion((json \ "version").get.as[String])
-  }
 
   private def addEmptyTests(testBuilder: TestBuilder): Unit = {
     val description =
-      "Empty test cases - " +  (json \ "cases" \ 0 \ "description").get.as[String]
+      "Empty test cases - " + (json \ "cases" \ 0 \ "description").get.as[String]
 
     val emptyTestCases = (json \ "cases" \ 0 \ "cases").get.as[List[EmptyTestCase]]
 
@@ -80,7 +79,7 @@ class CustomSetTestGenerator {
 
   private def addSubsetTests(testBuilder: TestBuilder): Unit = {
     val description =
-      "Subset test cases - " + (json \"cases" \ 2 \ "description").get.as[String]
+      "Subset test cases - " + (json \ "cases" \ 2 \ "description").get.as[String]
 
     val subsetTestCases = (json \ "cases" \ 2 \ "cases").get.as[List[SubsetTestCase]]
 
@@ -90,7 +89,7 @@ class CustomSetTestGenerator {
       val callSUT = s"CustomSet.isSubsetOf(set1, set2)"
       val expected = tc.expected.toString
       val result =
-s"""val set1 = $set1
+        s"""val set1 = $set1
     val set2 = $set2"""
       val checkResult = s"$callSUT should be ($expected)"
 
@@ -112,7 +111,7 @@ s"""val set1 = $set1
       val callSUT = s"CustomSet.isDisjointFrom(set1, set2)"
       val expected = tc.expected.toString
       val result =
-s"""val set1 = $set1
+        s"""val set1 = $set1
     val set2 = $set2"""
       val checkResult = s"$callSUT should be ($expected)"
 
@@ -134,7 +133,7 @@ s"""val set1 = $set1
       val callSUT = s"CustomSet.isEqual(set1, set2)"
       val expected = tc.expected.toString
       val result =
-s"""val set1 = $set1
+        s"""val set1 = $set1
     val set2 = $set2"""
       val checkResult = s"$callSUT should be ($expected)"
 
@@ -155,7 +154,7 @@ s"""val set1 = $set1
       val callSUT = s"CustomSet.insert(set, ${tc.input.element})"
       val expected = s"CustomSet.fromList(${tc.expected})"
       val result =
-s"""val set = $set
+        s"""val set = $set
     val expected = $expected"""
       val checkResult = s"CustomSet.isEqual($callSUT, expected) should be (true)"
 
@@ -177,7 +176,7 @@ s"""val set = $set
       val callSUT = s"CustomSet.intersection(set1, set2)"
       val expected = s"CustomSet.fromList(${tc.expected})"
       val result =
-s"""val set1 = $set1
+        s"""val set1 = $set1
     val set2 = $set2
     val expected = $expected"""
       val checkResult = s"CustomSet.isEqual($callSUT, expected) should be (true)"
@@ -200,7 +199,7 @@ s"""val set1 = $set1
       val callSUT = s"CustomSet.difference(set1, set2)"
       val expected = s"CustomSet.fromList(${tc.expected})"
       val result =
-s"""val set1 = $set1
+        s"""val set1 = $set1
     val set2 = $set2
     val expected = $expected"""
       val checkResult = s"CustomSet.isEqual($callSUT, expected) should be (true)"
@@ -223,7 +222,7 @@ s"""val set1 = $set1
       val callSUT = s"CustomSet.union(set1, set2)"
       val expected = s"CustomSet.fromList(${tc.expected})"
       val result =
-s"""val set1 = $set1
+        s"""val set1 = $set1
     val set2 = $set2
     val expected = $expected"""
       val checkResult = s"CustomSet.isEqual($callSUT, expected) should be (true)"
@@ -249,9 +248,7 @@ case class IntersectionTestCase(description: String, input: DoubleSetInput, expe
 case class DifferenceTestCase(description: String, input: DoubleSetInput, expected: List[Int])
 case class UnionTestCase(description: String, input: DoubleSetInput, expected: List[Int])
 
-
 object CustomSetTestGenerator {
-  def main(args: Array[String]): Unit = {
+  def main(args: Array[String]): Unit =
     new CustomSetTestGenerator().write
-  }
 }

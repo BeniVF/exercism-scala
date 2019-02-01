@@ -3,8 +3,8 @@ object Dominoes {
   type Dominoes = List[Domino]
 
   def chain(dominoes: Dominoes): Option[Dominoes] = {
-    val solutions = dominoes.permutations map createChain
-    solutions find (_.isDefined) flatten
+    val solutions = dominoes.permutations.map(createChain)
+    solutions.find(_.isDefined) flatten
   }
 
   private def createChain(dominoes: Dominoes): Option[Dominoes] = {
@@ -14,12 +14,11 @@ object Dominoes {
         else if (y1 == y2) Some((y2, x2))
         else None
     }
-    def matchingDominoes(x: Domino, y: Domino): Option[(Domino, Domino)] = {
-      matchingDomino(x, y) map ((x, _)) orElse {
+    def matchingDominoes(x: Domino, y: Domino): Option[(Domino, Domino)] =
+      matchingDomino(x, y).map((x, _)).orElse {
         val sx = x.swap
-        matchingDomino(sx, y) map ((sx, _))
+        matchingDomino(sx, y).map((sx, _))
       }
-    }
     def appendDomino(mxs: Option[Dominoes], candidate: Domino): Option[Dominoes] =
       for {
         chainSoFar <- mxs
@@ -29,13 +28,12 @@ object Dominoes {
 
     dominoes match {
       case Nil => Some(Nil)
-      case ys@(x::xs) =>
+      case ys @ (x :: xs) =>
         for {
           (rightDomino, leftDomino) <- matchingDominoes(ys.last, x)
           startChain = Option(List(leftDomino))
           result <- xs.foldLeft(startChain)(appendDomino) if result.last == rightDomino
         } yield result
-      }
+    }
   }
 }
-

@@ -16,7 +16,7 @@ class SimpleLinkedListImpl[T](first: Node[T]) extends SimpleLinkedList[T] {
   def isEmpty: Boolean = first == Empty
 
   def value: T = first match {
-    case Empty => throw new NoSuchElementException
+    case Empty             => throw new NoSuchElementException
     case node: NonEmpty[T] => node.value
   }
 
@@ -36,7 +36,7 @@ class SimpleLinkedListImpl[T](first: Node[T]) extends SimpleLinkedList[T] {
   }
 
   def next: SimpleLinkedList[T] = first match {
-    case Empty => this
+    case Empty             => this
     case node: NonEmpty[T] => new SimpleLinkedListImpl[T](first.asInstanceOf[NonEmpty[T]].next)
   }
 

@@ -1,4 +1,4 @@
-import org.scalatest.{Matchers, FunSuite}
+import org.scalatest.{FunSuite, Matchers}
 
 /** @version 1.2.0 */
 class AtbashCipherTest extends FunSuite with Matchers {
@@ -29,8 +29,7 @@ class AtbashCipherTest extends FunSuite with Matchers {
 
   test("encode numbers") {
     pending
-    AtbashCipher.encode("Testing,1 2 3, testing.") should be(
-      "gvhgr mt123 gvhgr mt")
+    AtbashCipher.encode("Testing,1 2 3, testing.") should be("gvhgr mt123 gvhgr mt")
   }
 
   test("encode deep thought") {

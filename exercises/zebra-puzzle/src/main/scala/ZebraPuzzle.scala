@@ -11,4 +11,3 @@ object ZebraPuzzle {
 
   lazy val solve: Solution = ???
 }
-

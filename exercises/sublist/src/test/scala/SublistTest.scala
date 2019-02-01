@@ -1,4 +1,4 @@
-import org.scalatest.{Matchers, FunSuite}
+import org.scalatest.{FunSuite, Matchers}
 
 /** @version 1.1.0 */
 class SublistTest extends FunSuite with Matchers {
@@ -29,50 +29,42 @@ class SublistTest extends FunSuite with Matchers {
 
   test("false start") {
     pending
-    Sublist.sublist(List(1, 2, 5), List(0, 1, 2, 3, 1, 2, 5, 6)) should be(
-      Sublist.Sublist)
+    Sublist.sublist(List(1, 2, 5), List(0, 1, 2, 3, 1, 2, 5, 6)) should be(Sublist.Sublist)
   }
 
   test("consecutive") {
     pending
-    Sublist.sublist(List(1, 1, 2), List(0, 1, 1, 1, 2, 1, 2)) should be(
-      Sublist.Sublist)
+    Sublist.sublist(List(1, 1, 2), List(0, 1, 1, 1, 2, 1, 2)) should be(Sublist.Sublist)
   }
 
   test("sublist at start") {
     pending
-    Sublist.sublist(List(0, 1, 2), List(0, 1, 2, 3, 4, 5)) should be(
-      Sublist.Sublist)
+    Sublist.sublist(List(0, 1, 2), List(0, 1, 2, 3, 4, 5)) should be(Sublist.Sublist)
   }
 
   test("sublist in middle") {
     pending
-    Sublist.sublist(List(2, 3, 4), List(0, 1, 2, 3, 4, 5)) should be(
-      Sublist.Sublist)
+    Sublist.sublist(List(2, 3, 4), List(0, 1, 2, 3, 4, 5)) should be(Sublist.Sublist)
   }
 
   test("sublist at end") {
     pending
-    Sublist.sublist(List(3, 4, 5), List(0, 1, 2, 3, 4, 5)) should be(
-      Sublist.Sublist)
+    Sublist.sublist(List(3, 4, 5), List(0, 1, 2, 3, 4, 5)) should be(Sublist.Sublist)
   }
 
   test("at start of superlist") {
     pending
-    Sublist.sublist(List(0, 1, 2, 3, 4, 5), List(0, 1, 2)) should be(
-      Sublist.Superlist)
+    Sublist.sublist(List(0, 1, 2, 3, 4, 5), List(0, 1, 2)) should be(Sublist.Superlist)
   }
 
   test("in middle of superlist") {
     pending
-    Sublist.sublist(List(0, 1, 2, 3, 4, 5), List(2, 3)) should be(
-      Sublist.Superlist)
+    Sublist.sublist(List(0, 1, 2, 3, 4, 5), List(2, 3)) should be(Sublist.Superlist)
   }
 
   test("at end of superlist") {
     pending
-    Sublist.sublist(List(0, 1, 2, 3, 4, 5), List(3, 4, 5)) should be(
-      Sublist.Superlist)
+    Sublist.sublist(List(0, 1, 2, 3, 4, 5), List(3, 4, 5)) should be(Sublist.Superlist)
   }
 
   test("first list missing element from second list") {

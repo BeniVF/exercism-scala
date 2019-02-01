@@ -4,24 +4,26 @@ import testgen.{CanonicalDataParser, TestCaseData, TestSuiteBuilder}
 import testgen.TestSuiteBuilder.{ToTestCaseData, quote, withLabeledTest}
 
 object MatrixTestGenerator {
-  def toString(expected: CanonicalDataParser.Expected): String = {
+  def toString(expected: CanonicalDataParser.Expected): String =
     expected match {
-      case Right(xs: List[Int]) => xs mkString ", "
-      case _ => throw new IllegalArgumentException
+      case Right(xs: List[Int]) => xs.mkString(", ")
+      case _                    => throw new IllegalArgumentException
     }
-  }
 
   def fromLabeledTestFromInput(): ToTestCaseData =
-    withLabeledTest { sut =>
-      labeledTest =>
-        val input = labeledTest.result("input").asInstanceOf[Map[String, Any]]
-        val matrix = input("string").asInstanceOf[String].lines.map(l => s""""$l""").mkString("\\n\" +") + "\""
-        val index = input("index").toString
-        val property = labeledTest.property
-        val sutCall =
-          s"""$sut($matrix).$property($index)"""
-        val expected = s"""Vector(${toString(labeledTest.expected)})"""
-        TestCaseData(labeledTest.description, sutCall, expected)
+    withLabeledTest { sut => labeledTest =>
+      val input = labeledTest.result("input").asInstanceOf[Map[String, Any]]
+      val matrix = input("string")
+        .asInstanceOf[String]
+        .lines
+        .map(l => s""""$l""")
+        .mkString("\\n\" +") + "\""
+      val index = input("index").toString
+      val property = labeledTest.property
+      val sutCall =
+        s"""$sut($matrix).$property($index)"""
+      val expected = s"""Vector(${toString(labeledTest.expected)})"""
+      TestCaseData(labeledTest.description, sutCall, expected)
     }
 
   def main(args: Array[String]): Unit = {

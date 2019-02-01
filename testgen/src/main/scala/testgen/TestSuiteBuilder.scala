@@ -18,46 +18,50 @@ object TestSuiteBuilder {
   private val DefaultTemplate: TestSuiteTemplate =
     txt.funSuiteTemplate.asInstanceOf[Template1[TestSuiteData, Txt]]
 
-  def build(file: File, toTestCaseData: ToTestCaseData, imports: Seq[String] = Seq(), statements: Seq[String] = Seq())(
-    implicit template: TestSuiteTemplate = DefaultTemplate): String =
-  {
+  def build(file: File,
+            toTestCaseData: ToTestCaseData,
+            imports: Seq[String] = Seq(),
+            statements: Seq[String] = Seq())(
+      implicit template: TestSuiteTemplate = DefaultTemplate): String = {
     val exercise @ Exercise(name, version, cases, comments) =
       CanonicalDataParser.parse(file)
     val tsName = testSuiteName(name)
-    val testCasesAllPending = cases map toTestCaseData(sutName(name))
+    val testCasesAllPending = cases.map(toTestCaseData(sutName(name)))
     val testCases =
-      testCasesAllPending updated(0, testCasesAllPending.head.copy(pending = false))
+      testCasesAllPending.updated(0, testCasesAllPending.head.copy(pending = false))
     val testSuiteData =
       TestSuiteData(tsName, version, imports, testCases, statements)
 
     template.render(testSuiteData).toString
   }
 
-
-  def buildFromList(file: File, toTestCaseData: ToTestCaseDataList, imports: Seq[String] = Seq(), statements: Seq[String] = Seq())(
-    implicit template: TestSuiteTemplate = DefaultTemplate): String =
-  {
+  def buildFromList(file: File,
+                    toTestCaseData: ToTestCaseDataList,
+                    imports: Seq[String] = Seq(),
+                    statements: Seq[String] = Seq())(implicit template: TestSuiteTemplate =
+                                                       DefaultTemplate): String = {
     val exercise @ Exercise(name, version, cases, comments) =
       CanonicalDataParser.parse(file)
     val tsName = testSuiteName(name)
     val testCasesAllPending = cases.flatMap(toTestCaseData(sutName(name)))
     val testCases =
-      testCasesAllPending updated(0, testCasesAllPending.head.copy(pending = false))
+      testCasesAllPending.updated(0, testCasesAllPending.head.copy(pending = false))
     val testSuiteData =
       TestSuiteData(tsName, version, imports, testCases, statements)
 
     template.render(testSuiteData).toString
   }
 
-  def buildFromOption(file: File, toTestCaseData: ToOptionTestCaseData, imports: Seq[String] = Seq())(
-    implicit template: TestSuiteTemplate = DefaultTemplate): String =
-  {
+  def buildFromOption(file: File,
+                      toTestCaseData: ToOptionTestCaseData,
+                      imports: Seq[String] = Seq())(implicit template: TestSuiteTemplate =
+                                                      DefaultTemplate): String = {
     val exercise @ Exercise(name, version, cases, comments) =
       CanonicalDataParser.parse(file)
     val tsName = testSuiteName(name)
     val testCasesAllPending = cases.map(toTestCaseData(sutName(name))).flatten
     val testCases =
-      testCasesAllPending updated(0, testCasesAllPending.head.copy(pending = false))
+      testCasesAllPending.updated(0, testCasesAllPending.head.copy(pending = false))
     val testSuiteData =
       TestSuiteData(tsName, version, imports, testCases)
 
@@ -97,7 +101,7 @@ object TestSuiteBuilder {
   def fromLabeledTestAlt(propArgs: (String, Seq[String])*): ToTestCaseData =
     withLabeledTest { sut => labeledTest =>
       val sutFunction = labeledTest.property
-      val args = sutArgsAlt(labeledTest.result, propArgs:_*)
+      val args = sutArgsAlt(labeledTest.result, propArgs: _*)
       val sutCall = s"$sut.$sutFunction(${args})"
       val expected = toString(labeledTest.expected)
 
@@ -108,7 +112,7 @@ object TestSuiteBuilder {
   def fromLabeledTestAltFromInput(propArgs: (String, Seq[String])*): ToTestCaseData =
     withLabeledTest { sut => labeledTest =>
       val sutFunction = labeledTest.property
-      val args = sutArgsAltFromInput(labeledTest.result, propArgs:_*)
+      val args = sutArgsAltFromInput(labeledTest.result, propArgs: _*)
       val sutCall = s"$sut.$sutFunction(${args})"
       val expected = toString(labeledTest.expected)
 
@@ -122,7 +126,8 @@ object TestSuiteBuilder {
           "sum-of-multiples" -> fromLabeledTest("factors", "limit"),
           "bowling" -> fromLabeledTest("previous_rolls"))
 
-    input foreach { case ((name, toTestCaseData)) =>
+    input.foreach {
+      case ((name, toTestCaseData)) =>
         val file = new File(s"$path/$name.json")
 
         val code = build(file, toTestCaseData)
@@ -133,44 +138,47 @@ object TestSuiteBuilder {
   }
 
   def sutName(exerciseName: String) =
-    exerciseName split "-" map (_.capitalize) mkString
+    exerciseName.split("-").map(_.capitalize) mkString
 
   def testSuiteName(exerciseName: String): String =
     sutName(exerciseName) + "Test"
 
   def sutArgs(parseResult: CanonicalDataParser.ParseResult, argNames: String*): String =
-    argNames map (name => toString(parseResult(name))) mkString(", ")
+    argNames.map(name => toString(parseResult(name))).mkString(", ")
 
   // Use when arguments are layered under "input" json element
   def sutArgsFromInput(parseResult: CanonicalDataParser.ParseResult, argNames: String*): String =
-    argNames map (name => toString(parseResult("input").asInstanceOf[Map[String, Any]](name))) mkString(", ")
+    argNames
+      .map(name => toString(parseResult("input").asInstanceOf[Map[String, Any]](name)))
+      .mkString(", ")
 
-  def sutArgsAlt(parseResult: CanonicalDataParser.ParseResult, propArgs: (String, Seq[String])*): String =
-    propArgs collect {
+  def sutArgsAlt(parseResult: CanonicalDataParser.ParseResult,
+                 propArgs: (String, Seq[String])*): String =
+    propArgs.collect {
       case ((property, argNames)) if parseResult("property") == property =>
-        sutArgs(parseResult, argNames:_*)
+        sutArgs(parseResult, argNames: _*)
     } head
 
   // Use when arguments are layered under "input" json element
-  def sutArgsAltFromInput(parseResult: CanonicalDataParser.ParseResult, propArgs: (String, Seq[String])*): String =
-    propArgs collect {
+  def sutArgsAltFromInput(parseResult: CanonicalDataParser.ParseResult,
+                          propArgs: (String, Seq[String])*): String =
+    propArgs.collect {
       case ((property, argNames)) if parseResult("property") == property =>
-        sutArgsFromInput(parseResult, argNames:_*)
+        sutArgsFromInput(parseResult, argNames: _*)
     } head
 
-
   private def toString(expected: CanonicalDataParser.Expected): String =
-      expected.fold(error => s"Left(${toString(error)})", toString)
+    expected.fold(error => s"Left(${toString(error)})", toString)
 
   def quote(str: String): String =
-    if ("\"\n" exists (str.contains(_:Char))) "\"\"\"" else "\""
+    if ("\"\n".exists(str.contains(_: Char))) "\"\"\"" else "\""
 
   def escape(raw: String): String = {
     import scala.reflect.runtime.universe._
     Literal(Constant(raw)).toString
   }
 
-  def toString(any: Any): String = {
+  def toString(any: Any): String =
     any match {
       case list: List[_] =>
         val vals = list.map(s => toString(s)).mkString(", ")
@@ -182,7 +190,6 @@ object TestSuiteBuilder {
         lstr.toString + "l"
       case _ => any.toString
     }
-  }
 
   /**
     * Get value from "input" map
@@ -196,8 +203,13 @@ object TestSuiteBuilder {
   }
 }
 
-case class TestCaseData(description: String, sutCall: String, expected: String,
-    pending: Boolean = true)
+case class TestCaseData(description: String,
+                        sutCall: String,
+                        expected: String,
+                        pending: Boolean = true)
 
-case class TestSuiteData(name: String, version: String, imports: Seq[String],
-  testCases: Seq[TestCaseData], statements: Seq[String] = Seq())
+case class TestSuiteData(name: String,
+                         version: String,
+                         imports: Seq[String],
+                         testCases: Seq[TestCaseData],
+                         statements: Seq[String] = Seq())

@@ -1,4 +1,4 @@
-import org.scalatest.{Matchers, FlatSpec}
+import org.scalatest.{FlatSpec, Matchers}
 
 class OctalTest extends FlatSpec with Matchers {
   it should "empty string should error" in {

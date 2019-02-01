@@ -1,15 +1,11 @@
 object BookStore {
   private val bookPrice = 800
   private val discounts =
-    Map((1, 0.0),
-      (2, 5.0),
-      (3, 10.0),
-      (4, 20.0),
-      (5, 25.0))
+    Map((1, 0.0), (2, 5.0), (3, 10.0), (4, 20.0), (5, 25.0))
 
   def total(books: List[Int]): Double = total(books, 0)
 
-  private def total(books: List[Int], acc: Double): Double = {
+  private def total(books: List[Int], acc: Double): Double =
     if (books.isEmpty) {
       acc
     } else {
@@ -22,14 +18,12 @@ object BookStore {
         scala.math.min(price, minPrice)
       })
     }
-  }
 
-  private def groupCost(groupSize: Int): Double = {
-    discounts get groupSize match {
+  private def groupCost(groupSize: Int): Double =
+    discounts.get(groupSize) match {
       case Some(discount) => bookPrice * groupSize * (100.0 - discount) / 100.0
-      case _ => bookPrice * groupSize
+      case _              => bookPrice * groupSize
     }
-  }
 
   private def getRemainingBooks(books: List[Int], itemsToRemove: List[Int]): List[Int] = {
     var remainingBooks = books
@@ -43,7 +37,7 @@ object BookStore {
 
   // drops the first item in the passed in list that matches the predicate.
   private def removeFirst[T](list: List[T])(pred: (T) => Boolean): List[T] = {
-    val (before, atAndAfter) = list span (x => !pred(x))
+    val (before, atAndAfter) = list.span(x => !pred(x))
     before ::: atAndAfter.drop(1)
   }
 }

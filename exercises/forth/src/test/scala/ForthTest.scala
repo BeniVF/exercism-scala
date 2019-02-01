@@ -1,4 +1,4 @@
-import org.scalatest.{Matchers, FunSuite}
+import org.scalatest.{FunSuite, Matchers}
 
 /** @version 1.6.0 */
 class ForthTest extends FunSuite with Matchers {
@@ -124,8 +124,7 @@ class ForthTest extends FunSuite with Matchers {
     forth.eval("1 2 swap").fold(_ => "", _.toString) should be("2 1")
   }
 
-  test(
-    "swap - swaps the top two values on the stack if they are not the only ones") {
+  test("swap - swaps the top two values on the stack if they are not the only ones") {
     pending
     forth.eval("1 2 3 swap").fold(_ => "", _.toString) should be("1 3 2")
   }
@@ -169,8 +168,7 @@ class ForthTest extends FunSuite with Matchers {
 
   test("user-defined words - execute in the right order") {
     pending
-    forth.eval(": countup 1 2 3 ; countup").fold(_ => "", _.toString) should be(
-      "1 2 3")
+    forth.eval(": countup 1 2 3 ; countup").fold(_ => "", _.toString) should be("1 2 3")
   }
 
   test("user-defined words - can override other user-defined words") {
@@ -221,26 +219,22 @@ class ForthTest extends FunSuite with Matchers {
 
   test("case-insensitivity - DROP is case-insensitive") {
     pending
-    forth.eval("1 2 3 4 DROP Drop drop").fold(_ => "", _.toString) should be(
-      "1")
+    forth.eval("1 2 3 4 DROP Drop drop").fold(_ => "", _.toString) should be("1")
   }
 
   test("case-insensitivity - SWAP is case-insensitive") {
     pending
-    forth.eval("1 2 SWAP 3 Swap 4 swap").fold(_ => "", _.toString) should be(
-      "2 3 4 1")
+    forth.eval("1 2 SWAP 3 Swap 4 swap").fold(_ => "", _.toString) should be("2 3 4 1")
   }
 
   test("case-insensitivity - OVER is case-insensitive") {
     pending
-    forth.eval("1 2 OVER Over over").fold(_ => "", _.toString) should be(
-      "1 2 1 2 1")
+    forth.eval("1 2 OVER Over over").fold(_ => "", _.toString) should be("1 2 1 2 1")
   }
 
   test("case-insensitivity - user-defined words are case-insensitive") {
     pending
-    forth.eval(": foo dup ; 1 FOO Foo foo").fold(_ => "", _.toString) should be(
-      "1 1 1 1")
+    forth.eval(": foo dup ; 1 FOO Foo foo").fold(_ => "", _.toString) should be("1 1 1 1")
   }
 
   test("case-insensitivity - definitions are case-insensitive") {

@@ -1,4 +1,4 @@
-import org.scalatest.{Matchers, FunSuite}
+import org.scalatest.{FunSuite, Matchers}
 
 /** @version 1.3.0 */
 class BinarySearchTest extends FunSuite with Matchers {
@@ -24,14 +24,13 @@ class BinarySearchTest extends FunSuite with Matchers {
 
   test("finds a value in an array of odd length") {
     pending
-    BinarySearch.find(List(1, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 634),
-                      144) should be(Some(9))
+    BinarySearch.find(List(1, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 634), 144) should be(
+      Some(9))
   }
 
   test("finds a value in an array of even length") {
     pending
-    BinarySearch.find(List(1, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377), 21) should be(
-      Some(5))
+    BinarySearch.find(List(1, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377), 21) should be(Some(5))
   }
 
   test("identifies that a value is not included in the array") {

@@ -18,6 +18,6 @@ object BracketPush extends RegexParsers {
 
   def isPaired(s: String) = this.parseAll(all, s) match {
     case NoSuccess(_, _) => false
-    case Success(_, _) => true
+    case Success(_, _)   => true
   }
 }

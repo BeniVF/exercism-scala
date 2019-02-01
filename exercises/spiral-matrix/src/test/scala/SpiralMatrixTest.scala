@@ -1,4 +1,4 @@
-import org.scalatest.{Matchers, FunSuite}
+import org.scalatest.{FunSuite, Matchers}
 
 /** @version 1.1.0 */
 class SpiralMatrixTest extends FunSuite with Matchers {
@@ -14,25 +14,18 @@ class SpiralMatrixTest extends FunSuite with Matchers {
 
   test("spiral of size 2") {
     pending
-    SpiralMatrix.spiralMatrix(2) should be(List(List(1, 2),
-                                                List(4, 3)))
+    SpiralMatrix.spiralMatrix(2) should be(List(List(1, 2), List(4, 3)))
   }
 
   test("spiral of size 3") {
     pending
-    SpiralMatrix.spiralMatrix(3) should be(
-      List(List(1, 2, 3), 
-           List(8, 9, 4), 
-           List(7, 6, 5)))
+    SpiralMatrix.spiralMatrix(3) should be(List(List(1, 2, 3), List(8, 9, 4), List(7, 6, 5)))
   }
 
   test("spiral of size 4") {
     pending
     SpiralMatrix.spiralMatrix(4) should be(
-      List(List(1, 2, 3, 4),
-           List(12, 13, 14, 5),
-           List(11, 16, 15, 6),
-           List(10, 9, 8, 7)))
+      List(List(1, 2, 3, 4), List(12, 13, 14, 5), List(11, 16, 15, 6), List(10, 9, 8, 7)))
   }
 
   test("spiral of size 5") {

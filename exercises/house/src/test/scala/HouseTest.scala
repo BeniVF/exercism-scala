@@ -1,4 +1,4 @@
-import org.scalatest.{Matchers, FunSuite}
+import org.scalatest.{FunSuite, Matchers}
 
 /** @version 2.2.0 */
 class HouseTest extends FunSuite with Matchers {
@@ -11,8 +11,7 @@ class HouseTest extends FunSuite with Matchers {
 
   test("verse two - the malt that lay") {
     pending
-    House.recite(2, 2) should be(
-      """This is the malt that lay in the house that Jack built.
+    House.recite(2, 2) should be("""This is the malt that lay in the house that Jack built.
 
 """)
   }

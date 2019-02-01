@@ -36,16 +36,19 @@ object Wordy extends RegexParsers {
     "divided by" | "raised to the"
 
   private def operation = expr ~ rep(operators ~ expr) ^^ {
-    case op ~ list => list.foldLeft(op) {
-      case (x, "plus" ~ y) => Sum(x, y)
-      case (x, "minus" ~ y) => Diff(x, y)
-      case (x, "multiplied by" ~ y) => Mult(x, y)
-      case (x, "divided by" ~ y) => Div(x, y)
-      case (x, "raised to the" ~ y) => Pow(x, y)
-    }
+    case op ~ list =>
+      list.foldLeft(op) {
+        case (x, "plus" ~ y)          => Sum(x, y)
+        case (x, "minus" ~ y)         => Diff(x, y)
+        case (x, "multiplied by" ~ y) => Mult(x, y)
+        case (x, "divided by" ~ y)    => Div(x, y)
+        case (x, "raised to the" ~ y) => Pow(x, y)
+      }
   }
 
-  private def operand: Parser[Const] = """-?\d+""".r ^^ {s => Const(s.toInt)}
+  private def operand: Parser[Const] = """-?\d+""".r ^^ { s =>
+    Const(s.toInt)
+  }
   private def expr: Parser[Expression] = operand | operation
 
   // Top level parser
@@ -55,6 +58,6 @@ object Wordy extends RegexParsers {
 
   def answer(question: String): Option[Int] = parse(question) match {
     case Success(result: Expression, _) => Some(result.evaluate())
-    case _ => None
+    case _                              => None
   }
 }

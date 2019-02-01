@@ -1,10 +1,10 @@
 object Bob {
   def response(statement: String): String = statement match {
     case ShoutingQuestion() => "Calm down, I know what I'm doing!"
-    case Shouting() => "Whoa, chill out!"
-    case Question() => "Sure."
-    case Silence() => "Fine. Be that way!"
-    case _ => "Whatever."
+    case Shouting()         => "Whoa, chill out!"
+    case Question()         => "Sure."
+    case Silence()          => "Fine. Be that way!"
+    case _                  => "Whatever."
   }
 
   case object ShoutingQuestion {

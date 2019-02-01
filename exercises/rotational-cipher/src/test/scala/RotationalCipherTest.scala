@@ -1,4 +1,4 @@
-import org.scalatest.{Matchers, FunSuite}
+import org.scalatest.{FunSuite, Matchers}
 
 /** @version 1.2.0 */
 class RotationalCipherTest extends FunSuite with Matchers {
@@ -39,14 +39,12 @@ class RotationalCipherTest extends FunSuite with Matchers {
 
   test("rotate numbers") {
     pending
-    RotationalCipher.rotate("Testing 1 2 3 testing", 4) should be(
-      "Xiwxmrk 1 2 3 xiwxmrk")
+    RotationalCipher.rotate("Testing 1 2 3 testing", 4) should be("Xiwxmrk 1 2 3 xiwxmrk")
   }
 
   test("rotate punctuation") {
     pending
-    RotationalCipher.rotate("Let's eat, Grandma!", 21) should be(
-      "Gzo'n zvo, Bmviyhv!")
+    RotationalCipher.rotate("Let's eat, Grandma!", 21) should be("Gzo'n zvo, Bmviyhv!")
   }
 
   test("rotate all letters") {

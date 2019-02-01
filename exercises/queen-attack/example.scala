@@ -22,4 +22,3 @@ object Queen {
       None
   }
 }
-

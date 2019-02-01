@@ -10,4 +10,3 @@ trait BankAccount {
 object Bank {
   def openAccount(): BankAccount = ???
 }
-

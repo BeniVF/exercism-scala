@@ -4,7 +4,7 @@ object Pangrams {
   def isPangram(input: String): Boolean = {
     val numUniqueChars = input.toStream
       .map(_.toLower)
-      .filter(c => c >= 'a' && c <='z')
+      .filter(c => c >= 'a' && c <= 'z')
       .toSet
       .size
     numUniqueChars == alphaLength

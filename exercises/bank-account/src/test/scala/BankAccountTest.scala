@@ -1,20 +1,20 @@
-import org.scalatest.concurrent.{IntegrationPatience, Conductors}
-import org.scalatest.{Matchers, FunSuite}
+import org.scalatest.concurrent.{Conductors, IntegrationPatience}
+import org.scalatest.{FunSuite, Matchers}
 
 /** @version created manually **/
 class BankAccountTest extends FunSuite with Matchers with Conductors with IntegrationPatience {
   test("open account") {
-    Bank.openAccount().getBalance should be (Some(0))
+    Bank.openAccount().getBalance should be(Some(0))
   }
 
   test("incrementing and checking balance") {
     pending
     val acct = Bank.openAccount()
-    acct.getBalance should be (Some(0))
-    acct.incrementBalance(10) should be (Some(10))
-    acct.getBalance should be (Some(10))
-    acct.incrementBalance(10) should be (Some(20))
-    acct.getBalance should be (Some(20))
+    acct.getBalance should be(Some(0))
+    acct.incrementBalance(10) should be(Some(10))
+    acct.getBalance should be(Some(10))
+    acct.incrementBalance(10) should be(Some(20))
+    acct.getBalance should be(Some(20))
   }
 
   test("closed account should hold no balance") {
@@ -23,7 +23,7 @@ class BankAccountTest extends FunSuite with Matchers with Conductors with Integr
     acct.closeAccount()
     acct.incrementBalance(10)
     acct.incrementBalance(10)
-    acct.getBalance should be (None)
+    acct.getBalance should be(None)
   }
 
   test("incrementing balance from multiple threads") {
@@ -35,18 +35,18 @@ class BankAccountTest extends FunSuite with Matchers with Conductors with Integr
 
     thread("t1") {
       acct.incrementBalance(10)
-      acct.getBalance should be (Some(10))
-      beat should be (1)
+      acct.getBalance should be(Some(10))
+      beat should be(1)
       waitForBeat(2)
-      acct.getBalance should be (Some(15))
+      acct.getBalance should be(Some(15))
     }
 
     thread("t2") {
       waitForBeat(1)
-      acct.getBalance should be (Some(10))
+      acct.getBalance should be(Some(10))
       acct.incrementBalance(5)
-      acct.getBalance should be (Some(15))
-      beat should be (2)
+      acct.getBalance should be(Some(15))
+      beat should be(2)
     }
   }
 
@@ -68,7 +68,7 @@ class BankAccountTest extends FunSuite with Matchers with Conductors with Integr
     }
 
     whenFinished {
-      acct.getBalance should be (Some(150))
+      acct.getBalance should be(Some(150))
     }
   }
 }

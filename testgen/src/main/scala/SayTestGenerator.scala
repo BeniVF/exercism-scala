@@ -8,18 +8,19 @@ object SayTestGenerator {
   def main(args: Array[String]): Unit = {
     val file = new File("src/main/resources/say.json")
 
-    def toString(expected: CanonicalDataParser.Expected): String = {
+    def toString(expected: CanonicalDataParser.Expected): String =
       expected match {
-        case Left(_) => "None"
+        case Left(_)   => "None"
         case Right(-1) => "None"
         case Right(n)  => s"""Some("$n")"""
       }
-    }
 
     def sutArgsFromInput(parseResult: CanonicalDataParser.ParseResult, argNames: String*): String =
-      argNames map (name => toArgString(parseResult("input").asInstanceOf[Map[String, Any]](name))) mkString ", "
+      argNames
+        .map(name => toArgString(parseResult("input").asInstanceOf[Map[String, Any]](name)))
+        .mkString(", ")
 
-    def toArgString(any: Any): String = {
+    def toArgString(any: Any): String =
       any match {
         case lstr: Long =>
           lstr.toString + "l"
@@ -29,17 +30,15 @@ object SayTestGenerator {
           dstr.toLong + "l"
         case _ => any.toString
       }
-    }
 
     def fromLabeledTestFromInput(argNames: String*): ToTestCaseData =
-      withLabeledTest { sut =>
-        labeledTest =>
-          val args = sutArgsFromInput(labeledTest.result, argNames: _*)
-          val property = labeledTest.property
-          val sutCall =
-            s"""$sut.inEnglish($args)"""
-          val expected = toString(labeledTest.expected)
-          TestCaseData(labeledTest.description, sutCall, expected)
+      withLabeledTest { sut => labeledTest =>
+        val args = sutArgsFromInput(labeledTest.result, argNames: _*)
+        val property = labeledTest.property
+        val sutCall =
+          s"""$sut.inEnglish($args)"""
+        val expected = toString(labeledTest.expected)
+        TestCaseData(labeledTest.description, sutCall, expected)
       }
 
     val code = TestSuiteBuilder.build(file, fromLabeledTestFromInput("number"))

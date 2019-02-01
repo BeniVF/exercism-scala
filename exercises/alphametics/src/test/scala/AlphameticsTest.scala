@@ -1,11 +1,10 @@
-import org.scalatest.{Matchers, FunSuite}
+import org.scalatest.{FunSuite, Matchers}
 
 /** @version 1.3.0 */
 class AlphameticsTest extends FunSuite with Matchers {
 
   test("puzzle with three letters") {
-    Alphametics.solve("I + BB == ILL") should be(
-      Some(Map('B' -> 9, 'I' -> 1, 'L' -> 0)))
+    Alphametics.solve("I + BB == ILL") should be(Some(Map('B' -> 9, 'I' -> 1, 'L' -> 0)))
   }
 
   test("solution must have unique value for each letter") {
@@ -26,8 +25,7 @@ class AlphameticsTest extends FunSuite with Matchers {
 
   test("puzzle with four letters") {
     pending
-    Alphametics.solve("AS + A == MOM") should be(
-      Some(Map('A' -> 9, 'M' -> 1, 'O' -> 0, 'S' -> 2)))
+    Alphametics.solve("AS + A == MOM") should be(Some(Map('A' -> 9, 'M' -> 1, 'O' -> 0, 'S' -> 2)))
   }
 
   test("puzzle with six letters") {
@@ -39,28 +37,13 @@ class AlphameticsTest extends FunSuite with Matchers {
   test("puzzle with seven letters") {
     pending
     Alphametics.solve("HE + SEES + THE == LIGHT") should be(
-      Some(
-        Map('E' -> 4,
-            'G' -> 2,
-            'H' -> 5,
-            'I' -> 0,
-            'L' -> 1,
-            'S' -> 9,
-            'T' -> 7)))
+      Some(Map('E' -> 4, 'G' -> 2, 'H' -> 5, 'I' -> 0, 'L' -> 1, 'S' -> 9, 'T' -> 7)))
   }
 
   test("puzzle with eight letters") {
     pending
     Alphametics.solve("SEND + MORE == MONEY") should be(
-      Some(
-        Map('D' -> 7,
-            'E' -> 5,
-            'M' -> 1,
-            'N' -> 6,
-            'O' -> 0,
-            'R' -> 8,
-            'S' -> 9,
-            'Y' -> 2)))
+      Some(Map('D' -> 7, 'E' -> 5, 'M' -> 1, 'N' -> 6, 'O' -> 0, 'R' -> 8, 'S' -> 9, 'Y' -> 2)))
   }
 
   test("puzzle with ten letters") {

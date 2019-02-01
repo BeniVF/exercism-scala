@@ -13,7 +13,7 @@ object Strain {
   private def recurse[A](seq: Seq[A], func: A => Boolean, acc: Seq[A]): Seq[A] =
     seq match {
       case Nil => acc
-      case x::xs =>
+      case x :: xs =>
         if (func(x))
           recurse(xs, func, x +: acc)
         else

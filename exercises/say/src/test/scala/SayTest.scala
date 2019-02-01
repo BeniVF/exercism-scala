@@ -1,4 +1,4 @@
-import org.scalatest.{Matchers, FunSuite}
+import org.scalatest.{FunSuite, Matchers}
 
 /** @version 1.1.0 */
 class SayTest extends FunSuite with Matchers {
@@ -64,7 +64,8 @@ class SayTest extends FunSuite with Matchers {
 
   test("a big number") {
     pending
-    Say.inEnglish(987654321123l) should be(Some("nine hundred eighty-seven billion six hundred fifty-four million three hundred twenty-one thousand one hundred twenty-three"))
+    Say.inEnglish(987654321123l) should be(Some(
+      "nine hundred eighty-seven billion six hundred fifty-four million three hundred twenty-one thousand one hundred twenty-three"))
   }
 
   test("numbers below zero are out of range") {

@@ -12,11 +12,12 @@ class DNA(dna: String) {
     val zeroCounts: Either[String, NucleotideCounts] =
       Right(EmptyNucleotideCounts)
 
-    dna.foldLeft(zeroCounts) { case (nucleotideCounts, char) =>
-      for {
-        nucleotide <- toNucleotide(char)
-        counts <- nucleotideCounts
-      } yield counts updated (nucleotide, counts.getOrElse(nucleotide, 0) + 1)
+    dna.foldLeft(zeroCounts) {
+      case (nucleotideCounts, char) =>
+        for {
+          nucleotide <- toNucleotide(char)
+          counts <- nucleotideCounts
+        } yield counts.updated(nucleotide, counts.getOrElse(nucleotide, 0) + 1)
     }
   }
 
@@ -27,11 +28,11 @@ class DNA(dna: String) {
 
 object DNA {
   type Nucleotide = Char
-  type NucleotideCounts = Map[Nucleotide,Int]
+  type NucleotideCounts = Map[Nucleotide, Int]
   type OrError[T] = Either[String, T]
 
   val DnaNucleotides: Set[Nucleotide] = Set('A', 'T', 'C', 'G')
 
   val EmptyNucleotideCounts: NucleotideCounts =
-    DnaNucleotides map (_ -> 0) toMap
+    DnaNucleotides.map(_ -> 0) toMap
 }

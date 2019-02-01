@@ -16,13 +16,11 @@ object RobotSimulatorTestGenerator {
     def getPosition2(positionMap: Map[String, Any]): (Int, Int) =
       (positionMap("x").asInstanceOf[Int], positionMap("y").asInstanceOf[Int])
 
-
     def getDirection(labeledTest: LabeledTest): String =
       fromInputMap(labeledTest.result, "direction").toString
 
     def toPositionArgs(position: (Int, Int)): String =
       s"${position._1}, ${position._2}"
-
 
     def getExpectedMap(labeledTest: LabeledTest): Map[String, Any] =
       labeledTest.result("expected").asInstanceOf[Map[String, Any]]
@@ -31,8 +29,8 @@ object RobotSimulatorTestGenerator {
       direction.toLowerCase match {
         case "north" => "Bearing.North"
         case "south" => "Bearing.South"
-        case "east" => "Bearing.East"
-        case "west" => "Bearing.West"
+        case "east"  => "Bearing.East"
+        case "west"  => "Bearing.West"
       }
 
     def toCreateSutCall(labeledTest: LabeledTest): String = {
@@ -43,15 +41,17 @@ object RobotSimulatorTestGenerator {
     def toCreateExpected(labeledTest: LabeledTest): String = {
       val robotMap = getExpectedMap(labeledTest)
       val bearing = directionToBearing(robotMap("direction").toString)
-      val positionArgs = toPositionArgs(getPosition2(robotMap("position")
-        .asInstanceOf[Map[String, Int]]))
+      val positionArgs = toPositionArgs(
+        getPosition2(
+          robotMap("position")
+            .asInstanceOf[Map[String, Int]]))
       s"Robot($bearing, ($positionArgs))"
     }
 
     def toTurnFunction(map: Map[String, Any]) =
       map.get("direction") match {
         case Some(_) => "bearing"
-        case None => "coordinates"
+        case None    => "coordinates"
       }
 
     def toTurnSutCall(labeledTest: LabeledTest): String = {
@@ -62,7 +62,7 @@ object RobotSimulatorTestGenerator {
 
     def toTurnExpected(labeledTest: LabeledTest): String = {
       val expected = getExpectedMap(labeledTest)
-      expected.foreach{case (k, v) => System.out.println(s"$k")}
+      expected.foreach { case (k, v) => System.out.println(s"$k") }
       expected.get("direction") match {
         case Some(s: String) => directionToBearing(s)
         case None => {
@@ -81,23 +81,21 @@ object RobotSimulatorTestGenerator {
       toCreateExpected(labeledTest)
 
     def fromLabeledTest(argNames: String*): ToTestCaseData =
-      withLabeledTest { sut =>
-        labeledTest =>
-          val property = labeledTest.property
-          val (sutCall, expected) = property match {
-            case "create" =>
-              (toCreateSutCall(labeledTest),
-                toCreateExpected(labeledTest))
-            case "turnRight" | "turnLeft" | "advance" =>
-              (toTurnSutCall(labeledTest),
-                toTurnExpected(labeledTest))
-            case "instructions" =>
-              (toInstructSutCall(labeledTest),
-                toInstructExpected(labeledTest))
-            case _ => throw new IllegalStateException()
-          }
-          TestCaseData(labeledTest.parentDescriptions.mkString(" - ") + " - " + labeledTest.description,
-            sutCall, expected)
+      withLabeledTest { sut => labeledTest =>
+        val property = labeledTest.property
+        val (sutCall, expected) = property match {
+          case "create" =>
+            (toCreateSutCall(labeledTest), toCreateExpected(labeledTest))
+          case "turnRight" | "turnLeft" | "advance" =>
+            (toTurnSutCall(labeledTest), toTurnExpected(labeledTest))
+          case "instructions" =>
+            (toInstructSutCall(labeledTest), toInstructExpected(labeledTest))
+          case _ => throw new IllegalStateException()
+        }
+        TestCaseData(
+          labeledTest.parentDescriptions.mkString(" - ") + " - " + labeledTest.description,
+          sutCall,
+          expected)
       }
 
     val code =

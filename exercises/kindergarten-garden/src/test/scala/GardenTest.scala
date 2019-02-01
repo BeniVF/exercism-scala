@@ -1,4 +1,4 @@
-import org.scalatest.{Matchers, FunSuite}
+import org.scalatest.{FunSuite, Matchers}
 
 /** @version 1.1.1 */
 class KindergartenGardenTest extends FunSuite with Matchers {
@@ -38,31 +38,27 @@ class KindergartenGardenTest extends FunSuite with Matchers {
     pending
     Garden
       .defaultGarden("VRCGVVRVCGGCCGVRGCVCGCGV\nVRCCCGCRRGVCGCRVVCVGCGCV")
-      .plants("Alice") should be(
-      List(Plant.Violets, Plant.Radishes, Plant.Violets, Plant.Radishes))
+      .plants("Alice") should be(List(Plant.Violets, Plant.Radishes, Plant.Violets, Plant.Radishes))
   }
 
   test("full garden - second student's garden") {
     pending
     Garden
       .defaultGarden("VRCGVVRVCGGCCGVRGCVCGCGV\nVRCCCGCRRGVCGCRVVCVGCGCV")
-      .plants("Bob") should be(
-      List(Plant.Clover, Plant.Grass, Plant.Clover, Plant.Clover))
+      .plants("Bob") should be(List(Plant.Clover, Plant.Grass, Plant.Clover, Plant.Clover))
   }
 
   test("full garden - second to last student's garden") {
     pending
     Garden
       .defaultGarden("VRCGVVRVCGGCCGVRGCVCGCGV\nVRCCCGCRRGVCGCRVVCVGCGCV")
-      .plants("Kincaid") should be(
-      List(Plant.Grass, Plant.Clover, Plant.Clover, Plant.Grass))
+      .plants("Kincaid") should be(List(Plant.Grass, Plant.Clover, Plant.Clover, Plant.Grass))
   }
 
   test("full garden - last student's garden") {
     pending
     Garden
       .defaultGarden("VRCGVVRVCGGCCGVRGCVCGCGV\nVRCCCGCRRGVCGCRVVCVGCGCV")
-      .plants("Larry") should be(
-      List(Plant.Grass, Plant.Violets, Plant.Clover, Plant.Violets))
+      .plants("Larry") should be(List(Plant.Grass, Plant.Violets, Plant.Clover, Plant.Violets))
   }
 }

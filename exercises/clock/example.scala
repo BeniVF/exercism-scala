@@ -18,12 +18,11 @@ case class Clock(minutes: Int) {
 
   override def toString: String = f"$hour%02d:$min%02d"
 
-  override def equals(that: scala.Any): Boolean = {
+  override def equals(that: scala.Any): Boolean =
     that match {
       case that: Clock => normalized == that.normalized
-      case _ => false
+      case _           => false
     }
-  }
 
   override def hashCode(): Int = 41 * minutes
 }

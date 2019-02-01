@@ -32,4 +32,3 @@ object Zipper {
 
 // A binary tree.
 case class BinTree[A](value: A, left: Option[BinTree[A]], right: Option[BinTree[A]])
-
