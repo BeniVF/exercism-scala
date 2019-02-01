@@ -1,4 +1,4 @@
-object AtbashCipher{
+object AtbashCipher {
 
   private val alpha = {
     val plain = "abcdefghijklmnopqrstuvwxyz"

@@ -34,4 +34,3 @@ object Allergen extends Enum[Allergen] {
 
   override def values = findValues
 }
-
