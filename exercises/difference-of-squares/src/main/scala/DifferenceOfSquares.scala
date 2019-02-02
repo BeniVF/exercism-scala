@@ -1,8 +1,16 @@
 object DifferenceOfSquares {
+  import Math._
 
-  def sumOfSquares(n: Int): Int = ???
+  def squareOfSum(n: Int): Int =
+    pow(sumOfFirst(n), 2).toInt
 
-  def squareOfSum(n: Int): Int = ???
+  def sumOfSquares(n: Int): Int =
+    ceil((pow(n, 3) / 3.0) + (pow(n, 2) / 2.0) + (n / 6.0)).toInt
 
-  def differenceOfSquares(n: Int): Int = ???
+  def differenceOfSquares(n: Int): Int =
+    squareOfSum(n) - sumOfSquares(n)
+
+  private def sumOfFirst(n: Int): Double =
+    (n * (n + 1)) / 2.0
+
 }
