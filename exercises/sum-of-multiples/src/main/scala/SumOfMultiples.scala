@@ -1,10 +1,28 @@
-object SumOfMultiples {
+import scala.annotation.tailrec
 
-  def sum(factors: Set[Int], limit: Int): Int =
-    (1 until limit)
-      .filter(n => factors.exists(isDivisible(n, _)))
-      .sum
+object SumOfMultiples extends App {
 
-  private def isDivisible(number: Int, divisor: Int): Boolean = number % divisor == 0
+  def sum(factors: Set[Int], limit: Int): Int = {
+    val max = limit - 1
+
+    def sumFactors(factors: Set[Int]): Int =
+      factors.map(sumOfMultiple(_, max)).sum
+
+    val commonFactors = factors.toList.combinations(2).map(_.foldLeft(1)(lcm)).toSet
+
+    sumFactors(factors) - sumFactors(commonFactors)
+
+  }
+
+  private def sumOfMultiple(factor: Int, number: Int): Int =
+    factor * sumOfFirst(countDivisors(factor, number))
+
+  private def sumOfFirst(number: Int): Int = (number * (number + 1)) / 2
+
+  private def countDivisors(factor: Int, number: Int): Int = (number - number % factor) / factor
+  @tailrec
+  private def gcd(x: Int, y: Int): Int = if (y == 0) x else gcd(y, x % y)
+
+  private def lcm(x: Int, y: Int): Int = x * (y / gcd(x, y))
 
 }

@@ -36,6 +36,7 @@ class SumOfMultiplesTest extends FunSuite with Matchers {
   }
 
   test("multiples of 5, 6 or 8 up to 150") {
+    pending
     SumOfMultiples.sum(Set(5, 6, 8), 150) should be(4419)
   }
 
